@@ -1,9 +1,9 @@
-import "./Recipe.css"
+import "./Saved.css"
 import Header from "../../assets/Header/Header";
 import Footer from "../../assets/Footer/Footer";
 
 
-export default function Recipe () {
+export default function Saved () {
     return (
       <div>
         <Header></Header>

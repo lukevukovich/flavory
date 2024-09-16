@@ -1,9 +1,15 @@
 .footer {
     border-top: 1px solid rgb(235, 128, 79);
     display: flex;
-    justify-content: space-evenly;
     padding-top: 40px;
     padding-bottom: 40px;
+    justify-content: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 1600px;
 }
 
 .footer-disclaimer {
@@ -15,7 +21,7 @@
 }
 
 .footer-note {
-    width: 300px;
+    width: 200px;
     display: flex;
     flex-direction: column;
     align-items: start;

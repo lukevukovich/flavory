@@ -1,0 +1,49 @@
+.search-bar input {
+  border: none;
+  color: white;
+  font-size: 18px;
+  width: 500px;
+  outline: none;
+  background-color: rgb(99, 35, 10);
+  font-size: 18px;
+  padding: 20px;
+  padding-left: 55px;
+  padding-right: 58px;
+  cursor: text;
+  border-radius: 35px;
+}
+
+.search-bar input::placeholder {
+  color: rgb(184, 115, 88);
+}
+
+.search-bar input:hover,
+.search-bar input:focus {
+  outline: none;
+  background-color: rgb(110, 40, 12);
+}
+
+.search-bar button {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: inherit;
+  margin-left: 10px;
+  transform: translateX(-175%) translateY(5%);
+  color: rgb(184, 115, 88);
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.search-bar button:hover {
+  background-color: rgb(43, 22, 13);
+  border-radius: 20px;
+}
+
+.search-icon {
+  font-size: 18px;
+  transform: translateX(220%) translateY(5%);
+  color: rgb(184, 115, 88);
+}

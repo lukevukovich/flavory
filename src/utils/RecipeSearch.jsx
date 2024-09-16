@@ -1,0 +1,2 @@
+const APP_ID = "d3670571";
+const API_KEY = "844303662a0189275d20f63778c1dbf2";
