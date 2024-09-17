@@ -11,6 +11,7 @@
   padding-right: 58px;
   cursor: text;
   border-radius: 35px;
+  margin-left: 20px;
 }
 
 .search-bar input::placeholder {
@@ -21,6 +22,12 @@
 .search-bar input:focus {
   outline: none;
   background-color: rgb(110, 40, 12);
+}
+
+@media (max-width: 650px) {
+  .search-bar input {
+    width: 200px;
+  }
 }
 
 .search-bar button {
@@ -44,6 +51,6 @@
 
 .search-icon {
   font-size: 18px;
-  transform: translateX(220%) translateY(5%);
+  transform: translateX(330%) translateY(5%);
   color: rgb(184, 115, 88);
 }

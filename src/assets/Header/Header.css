@@ -46,7 +46,7 @@
 }
 
 .header-button:hover {
-  background-color: rgb(121, 38, 0);
+  background-color: rgb(138, 44, 0);
   transform: scale(1.07);
 }
 
@@ -66,4 +66,57 @@
 .caret-down-icon {
   font-size: 15px;
   justify-content: start;
+  transition: transform 0.2s ease;
+}
+
+.caret-down-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.menu-panel {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, top 0.2s ease; /* Adjust duration as needed */
+  position: fixed;
+  top: 65px;
+  right: 20px;
+  width: 200px;
+  height: 170px;
+  background-color: rgb(99, 35, 10);
+  outline: 1px solid rgb(235, 128, 79);
+  outline-offset: -1px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.menu-panel.visible {
+  opacity: 1;
+  visibility: visible;
+  top: 75px;
+}
+
+.menu-button {
+  color: rgb(184, 115, 88);
+  padding-left: 20px;
+  text-align: left;
+  font-size: 18px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+}
+
+.menu-button:hover {
+  color: white;
+}
+
+.menu-button-icon {
+  margin-right: 10px;
+}
+
+.menu-button-icon-bookmark {
+  padding-left: 3px;
 }

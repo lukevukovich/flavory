@@ -6,13 +6,13 @@ import { useState, useEffect, useRef } from "react";
 export default function () {
   const [search, setSearch] = useState("");
 
-  const clearRef = useRef(null);
+  const clearButton = useRef(null);
 
   useEffect(() => {
     if (search === "") {
-      clearRef.current.style.visibility = "hidden";
+      clearButton.current.style.visibility = "hidden";
     } else {
-      clearRef.current.style.visibility = "visible";
+      clearButton.current.style.visibility = "visible";
     }
   }
   , [search]);
@@ -28,7 +28,7 @@ export default function () {
           setSearch(e.target.value.toLowerCase());
         }}
       />
-      <button ref={clearRef}>
+      <button ref={clearButton}>
         <FontAwesomeIcon
           icon={faXmark}
           onClick={() => {

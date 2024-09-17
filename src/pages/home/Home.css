@@ -13,4 +13,11 @@
     font-weight: 500;
     color: white;
     margin-bottom: 50px;
+    text-align: center;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.discover-home {
+    margin-top: 150px !important;
 }
