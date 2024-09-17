@@ -10,18 +10,42 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn, signOut, checkSignInStatus, getUser } from "../../utils/Auth";
+import { signIn, signOut, checkSignInStatus } from "../../utils/Auth";
 
 export default function Header() {
   const navigate = useNavigate();
 
   // State for menu panel
   const [expanded, setExpanded] = useState(false);
+
+  // Refs for menu panel and sign in button
   const menuPanel = useRef(null);
   const menuButton = useRef(null);
   const menuEmail = useRef(null);
 
+  // State for sign in button text
   const [userButtonText, setUserButtonText] = useState("sign in");
+
+  // Check if user is signed in and set email
+  async function setEmailOnSignIn() {
+    const { isSignedIn, user } = await checkSignInStatus();
+    if (isSignedIn) {
+      menuEmail.current.innerHTML = user.email;
+      menuEmail.current.style.display = "flex";
+      setUserButtonText("sign out");
+      menuPanel.current.style.height = "175px";
+    } else {
+      menuEmail.current.style.display = "none";
+      setUserButtonText("sign in");
+      menuPanel.current.classList.remove("signed-in");
+      menuPanel.current.style.height = "130px";
+    }
+  }
+
+  // Check if user is signed in on load
+  useEffect(() => {
+    setEmailOnSignIn();
+  }, []);
 
   // Detect click outside of menu panel
   const handleClickOutside = (event) => {
@@ -43,23 +67,6 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [expanded]);
-
-  // Check if user is signed in
-  useEffect(() => {
-    setEmailOnSignIn();
-  }, []);
-
-  async function setEmailOnSignIn() {
-    const { isSignedIn, user } = await checkSignInStatus();
-    if (isSignedIn) {
-      menuEmail.current.innerHTML = user.email;
-      menuEmail.current.style.display = "flex";
-      setUserButtonText("sign out");
-    } else {
-      menuEmail.current.style.display = "none";
-      setUserButtonText("sign in");
-    }
-  }
 
   return (
     <div className="header">
@@ -102,13 +109,17 @@ export default function Header() {
             onClick={async () => {
               const { isSignedIn, user } = await checkSignInStatus();
               if (isSignedIn) {
-                await signOut();
-                setEmailOnSignIn();
-                signInButton.current.innerHTML = "sign in";
+                const success = await signOut();
+                if (success) {
+                  setEmailOnSignIn();
+                  signInButton.current.innerHTML = "sign in";
+                }
               } else {
-                await signIn();
-                setEmailOnSignIn();
-                signInButton.current.innerHTML = "sign out";
+                const success = await signIn();
+                if (success) {
+                  setEmailOnSignIn();
+                  signInButton.current.innerHTML = "sign out";
+                }
               }
             }}
           >

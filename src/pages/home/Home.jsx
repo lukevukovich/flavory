@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
+  // State for random saying
   const [saying, setSaying] = useState("");
 
+  // Set random saying on load
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * sayings.length);
     setSaying(sayings[randomIndex]);

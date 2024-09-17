@@ -1,3 +1,4 @@
+// Sayings for random prompts on the home page
 export const sayings = [
   "what’s cooking today?",
   "hungry for something new?",

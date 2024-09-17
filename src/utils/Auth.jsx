@@ -6,8 +6,10 @@ import {
 } from "firebase/auth";
 import { auth } from "./Firebase";
 
+// Provider for Google Sign-In
 const provider = new GoogleAuthProvider();
 
+// Sign in with Google
 export const signIn = async () => {
   try {
     await signInWithPopup(auth, provider);
@@ -16,6 +18,8 @@ export const signIn = async () => {
     return false;
   }
 };
+
+// Sign out
 export const signOut = async () => {
   try {
     await signUserOut(auth);
@@ -25,6 +29,7 @@ export const signOut = async () => {
   }
 };
 
+// Check sign-in status, returns sign in status and user object
 export function checkSignInStatus() {
   return new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
@@ -35,8 +40,4 @@ export function checkSignInStatus() {
       }
     });
   });
-}
-
-export function getUser() {
-  return auth.currentUser;
 }
