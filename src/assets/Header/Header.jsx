@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { signIn, signOut, checkSignInStatus, getUser } from "../../utils/Auth";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ export default function Header() {
   const [expanded, setExpanded] = useState(false);
   const menuPanel = useRef(null);
   const menuButton = useRef(null);
+  const menuEmail = useRef(null);
+
+  const [userButtonText, setUserButtonText] = useState("sign in");
 
   // Detect click outside of menu panel
   const handleClickOutside = (event) => {
@@ -39,6 +43,23 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [expanded]);
+
+  // Check if user is signed in
+  useEffect(() => {
+    setEmailOnSignIn();
+  }, []);
+
+  async function setEmailOnSignIn() {
+    const { isSignedIn, user } = await checkSignInStatus();
+    if (isSignedIn) {
+      menuEmail.current.innerHTML = user.email;
+      menuEmail.current.style.display = "flex";
+      setUserButtonText("sign out");
+    } else {
+      menuEmail.current.style.display = "none";
+      setUserButtonText("sign in");
+    }
+  }
 
   return (
     <div className="header">
@@ -75,12 +96,27 @@ export default function Header() {
           className={`menu-panel  ${expanded ? "visible" : "hidden"}`}
           ref={menuPanel}
         >
-          <button className="menu-button menu-button-showcase">
+          <button className="menu-email menu-button" ref={menuEmail}></button>
+          <button
+            className="menu-button menu-button-showcase"
+            onClick={async () => {
+              const { isSignedIn, user } = await checkSignInStatus();
+              if (isSignedIn) {
+                await signOut();
+                setEmailOnSignIn();
+                signInButton.current.innerHTML = "sign in";
+              } else {
+                await signIn();
+                setEmailOnSignIn();
+                signInButton.current.innerHTML = "sign out";
+              }
+            }}
+          >
             <FontAwesomeIcon
               icon={faUser}
               className="menu-button-icon"
             ></FontAwesomeIcon>
-            sign in
+            {userButtonText}
           </button>
           <button
             className="menu-button"
