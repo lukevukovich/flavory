@@ -17,8 +17,7 @@ export default function () {
     } else {
       clearButton.current.style.visibility = "visible";
     }
-  }
-  , [search]);
+  }, [search]);
 
   return (
     <div className="search-bar">
@@ -31,13 +30,13 @@ export default function () {
           setSearch(e.target.value.toLowerCase());
         }}
       />
-      <button ref={clearButton}>
-        <FontAwesomeIcon
-          icon={faXmark}
-          onClick={() => {
-            setSearch("");
-          }}
-        />
+      <button
+        ref={clearButton}
+        onClick={() => {
+          setSearch("");
+        }}
+      >
+        <FontAwesomeIcon icon={faXmark} />
       </button>
     </div>
   );

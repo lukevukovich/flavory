@@ -5,6 +5,8 @@ import SearchBar from "../../assets/SearchBar/SearchBar";
 import { useState, useEffect } from "react";
 import { sayings } from "../../utils/Sayings";
 import { useNavigate } from "react-router-dom";
+import { faCompass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ export default function Home() {
           onClick={() => {
             navigate("/discover");
           }}
-        >
+        ><FontAwesomeIcon icon={faCompass} className="discover-icon utensils-icon" />
           discover
         </button>
       </div>
