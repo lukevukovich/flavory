@@ -2,6 +2,7 @@ import "./SearchBar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
+import { getRecipes, getRecipeByID } from "../../utils/RecipeAPI";
 
 export default function () {
   // State for search input
@@ -18,6 +19,11 @@ export default function () {
       clearButton.current.style.visibility = "visible";
     }
   }, [search]);
+
+  async function searchRecipes(query) {
+    const result = await getRecipes(query, 20, 40);
+    console.log(result);
+  }
 
   return (
     <div className="search-bar">

@@ -1,23 +1,30 @@
 .home-search-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-top: 90px;
-    margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 90px;
+  margin-bottom: 100px;
 }
 
 .home-search-prompt {
-    font-size: 35px;
-    font-weight: 500;
-    color: white;
-    margin-bottom: 50px;
-    text-align: center;
-    padding-left: 30px;
-    padding-right: 30px;
+  font-size: 35px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 50px;
+  text-align: center;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .discover-home {
-    margin-top: 150px !important;
+  margin-top: 150px !important;
+}
+
+@media (max-width: 650px) {
+    .home-search-prompt {
+        font-size: 25px;
+        margin-bottom: 64px;
+    }
 }

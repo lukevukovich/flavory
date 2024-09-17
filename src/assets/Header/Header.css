@@ -11,6 +11,12 @@
   background-color: rgb(228, 82, 25);
 }
 
+@media (max-width: 280px) {
+  .header {
+    justify-content: end !important;
+  }
+}
+
 .left,
 .right {
   display: flex;
@@ -82,12 +88,12 @@
   right: 20px;
   width: auto;
   min-width: 200px;
-  max-width: 500px;
+  max-width: 300px;
   height: 130px;
   background-color: rgb(99, 35, 10);
   outline: 1px solid rgb(235, 128, 79);
   outline-offset: -1px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -119,14 +125,21 @@
   margin-right: 10px;
 }
 
+.menu-button-icon-user {
+  padding-right: 3px;
+}
+
 .menu-button-icon-bookmark {
   padding-left: 3px;
+  padding-right: 3px;
 }
 
 .menu-email {
   display: none;
-  border-bottom: 1px solid rgb(235, 128, 79);
+  border-bottom: 1px solid rgb(133, 67, 37);
   padding-bottom: 10px;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .menu-email:hover {

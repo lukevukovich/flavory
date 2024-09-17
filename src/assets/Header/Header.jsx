@@ -30,7 +30,8 @@ export default function Header() {
   async function setEmailOnSignIn() {
     const { isSignedIn, user } = await checkSignInStatus();
     if (isSignedIn) {
-      menuEmail.current.innerHTML = user.email;
+      const username = user.email.split("@")[0];
+      menuEmail.current.innerHTML = username;
       menuEmail.current.style.display = "flex";
       setUserButtonText("sign out");
       menuPanel.current.style.height = "175px";
@@ -125,7 +126,7 @@ export default function Header() {
           >
             <FontAwesomeIcon
               icon={faUser}
-              className="menu-button-icon"
+              className="menu-button-icon menu-button-icon-user"
             ></FontAwesomeIcon>
             {userButtonText}
           </button>
