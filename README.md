@@ -1,9 +1,5 @@
 # Flavory
-flavory is a recipe app that helps you discover and enjoy flavorful meals from various sources
-
-## Build
-- npm run build
-- npm run dev
+flavory is a recipe app that helps you discover and enjoy flavorful meals from various sources.
 
 ## Firebase Init
 - firebase init
@@ -14,6 +10,10 @@ flavory is a recipe app that helps you discover and enjoy flavorful meals from v
 
 ## Firebase Emulators
 firebase emulators:start
+
+## Build
+- npm run build
+- npm run dev
 
 ## Firebase Deploy
 - firebase deploy

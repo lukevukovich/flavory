@@ -2,7 +2,7 @@ const GET_RECIPES_URL = "https://getrecipes-tshqabnweq-uc.a.run.app";
 const GET_RECIPE_BY_ID_URL = "https://getrecipebyid-tshqabnweq-uc.a.run.app";
 
 // Query recipes from the Edamam API and Firebase cloud function
-export async function getRecipes(query, from, to) {
+export async function getRecipes(query) {
   try {
     const response = await fetch(`${GET_RECIPES_URL}?q=${query}`, {
       method: "GET",

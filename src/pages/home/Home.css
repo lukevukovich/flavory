@@ -18,8 +18,26 @@
   padding-right: 30px;
 }
 
+.home-recipe-results {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+.home-recipe-results-icon {
+  margin-right: 10px;
+}
+
+.home-recipe-panel {
+  display: none;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
 .discover-home {
-  margin-top: 150px !important;
+  margin-top: 120px !important;
+  margin-bottom: 40px !important;
 }
 
 @media (max-width: 650px) {
@@ -27,4 +45,12 @@
         font-size: 25px;
         margin-bottom: 64px;
     }
+}
+
+@media (max-width: 470px) {
+  .home-recipe-results {
+    font-size: 16px;
+    text-align: left;
+  }
+
 }

@@ -1,0 +1,24 @@
+.recipe-pane {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 20px;
+}
+
+@media (max-width: 920px) {
+    .recipe-pane {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 690px) {
+    .recipe-pane {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 370px) {
+    .recipe-pane {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

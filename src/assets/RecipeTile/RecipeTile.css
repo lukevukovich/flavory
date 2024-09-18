@@ -1,0 +1,39 @@
+.recipe-tile {
+    background-color: rgb(185, 75, 32);
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  transition: transform 0.3s;
+  cursor: pointer;
+  outline-offset: -1px;
+  border-radius: 10px;
+}
+
+.recipe-tile:hover {
+    transform: scale(1.05);
+    outline: 1px solid rgb(235, 128, 79);
+    outline-offset: 5px;
+}
+
+.recipe-tile-title {
+    font-size: 16px;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.recipe-tile-image {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+@media (max-width: 470px) {
+    .recipe-tile {
+        width: 150px;
+    }
+
+    .recipe-tile-title {
+        font-size: 12px;
+    }
+}
