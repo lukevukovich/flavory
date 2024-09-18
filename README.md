@@ -18,3 +18,11 @@ firebase emulators:start
 ## Firebase Deploy
 - firebase deploy
 - https://flavory-f4009.web.app/
+
+## To do
+- Fix sign in button margin
+- Load image promise?
+- Pagination
+- Discover page
+- Recipe page
+- Database init
