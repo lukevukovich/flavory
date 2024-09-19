@@ -15,33 +15,18 @@ export default function Home() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  // Refs
   const recipePane = useRef(null);
   const discoverButton = useRef(null);
+  const searchCountText = useRef(null);
 
   // State for random saying
   const [saying, setSaying] = useState("");
 
-  // State for recipe list and more results link
+  // States for recipe list
   const [recipeList, setRecipeList] = useState([]);
   const [moreResultsLink, setMoreResultsLink] = useState(null);
-
-  // Search for recipes if search input is not empty
-  async function searchRecipes(search) {
-    if (search === "") {
-      return;
-    }
-    const result = await getRecipes(search);
-    if (result.hits.length > 0) {
-      setRecipeList(result.hits);
-    } else {
-      setRecipeList([]);
-    }
-    try {
-      setMoreResultsLink(result._links.next.href);
-    } catch (error) {
-      setMoreResultsLink(null);
-    }
-  }
+  const [searchCount, setSearchCount] = useState(null);
 
   // Set random saying on load
   useEffect(() => {
@@ -59,6 +44,30 @@ export default function Home() {
     setSaying(sayings[randomIndex]);
   }, []);
 
+  // Search for recipes if search input is not empty
+  async function searchRecipes(search) {
+    if (search === "") {
+      return;
+    }
+    const result = await getRecipes(search);
+    if (result.hits.length > 0) {
+      setRecipeList(result.hits);
+    } else {
+      setRecipeList([]);
+    }
+    try {
+      setMoreResultsLink(result._links.next.href);
+    } catch (error) {
+      setMoreResultsLink(null);
+    }
+
+    if (result.count > 0) {
+      setSearchCount(result.count + " recipes");
+    } else {
+      setSearchCount(null);
+    }
+  }
+
   useEffect(() => {
     if (recipeList.length === 0) {
       recipePane.current.style.display = "none";
@@ -69,6 +78,14 @@ export default function Home() {
     }
   }, [recipeList]);
 
+  useEffect(() => {
+    if (searchCount === null) {
+      searchCountText.current.style.display = "none";
+    } else {
+      searchCountText.current.style.display = "flex";
+    }
+  }, [searchCount]);
+
   return (
     <div>
       <Header setRecipeList={setRecipeList}></Header>
@@ -77,15 +94,21 @@ export default function Home() {
         <SearchBar
           setRecipeList={setRecipeList}
           setMoreResultsLink={setMoreResultsLink}
+          setSearchCount={setSearchCount}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
-          <span className="home-recipe-results">
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="home-recipe-results-icon"
-            ></FontAwesomeIcon>
-            search results
-          </span>
+          <div className="home-recipe-results-panel">
+            <span className="home-recipe-results">
+              <FontAwesomeIcon
+                icon={faSearch}
+                className="home-recipe-results-icon"
+              ></FontAwesomeIcon>
+              search results
+            </span>
+            <span className="home-recipe-results-count" ref={searchCountText}>
+              {searchCount}
+            </span>
+          </div>
           <RecipePane
             recipeList={recipeList}
             setRecipeList={setRecipeList}

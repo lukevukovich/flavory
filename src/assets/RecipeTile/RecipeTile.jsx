@@ -10,8 +10,10 @@ export default function RecipeTile({ recipe }) {
       className="recipe-tile"
       id={getRecipeID(recipe)}
       onClick={(e) => {
-        navigate(`/recipe/${e.currentTarget.id}`);
-        console.log(e.currentTarget.id);
+        window.open(recipe.recipe.url, '_blank', 'noopener,noreferrer');
+
+        // navigate(`/recipe/${e.currentTarget.id}`);
+        // console.log(e.currentTarget.id);
       }}
     >
       <img

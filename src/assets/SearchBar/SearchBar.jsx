@@ -5,7 +5,11 @@ import { useState, useEffect, useRef } from "react";
 import { getRecipes } from "../../utils/RecipeAPI";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-export default function SearchBar({ setRecipeList, setMoreResultsLink }) {
+export default function SearchBar({
+  setRecipeList,
+  setMoreResultsLink,
+  setSearchCount,
+}) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -39,6 +43,12 @@ export default function SearchBar({ setRecipeList, setMoreResultsLink }) {
       setMoreResultsLink(null);
     }
     setPreviousSearch(search);
+
+    if (result.count > 0) {
+      setSearchCount(result.count + " recipes");
+    } else {
+      setSearchCount(null);
+    }
   }
 
   // Set search input on load
