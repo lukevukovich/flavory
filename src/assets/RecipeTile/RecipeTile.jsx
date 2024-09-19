@@ -1,19 +1,14 @@
 import "./RecipeTile.css";
 import { getRecipeID } from "../../utils/RecipeAPI";
-import { useNavigate } from "react-router-dom";
 
 export default function RecipeTile({ recipe }) {
-  const navigate = useNavigate();
-
   return (
     <div
       className="recipe-tile"
       id={getRecipeID(recipe)}
       onClick={(e) => {
-        window.open(recipe.recipe.url, '_blank', 'noopener,noreferrer');
-
-        // navigate(`/recipe/${e.currentTarget.id}`);
-        // console.log(e.currentTarget.id);
+        // Open the recipe in a new tab
+        window.open(recipe.recipe.url, "_blank", "noopener,noreferrer");
       }}
     >
       <img

@@ -53,9 +53,24 @@
   padding-right: 10px;
   height: 40px;
   width: 40px;
+  border-radius: 20px;
 }
 
 .search-bar button:hover {
   background-color: rgb(43, 22, 13);
-  border-radius: 20px;
+}
+
+.search-bar-search-button {
+  transition: transform 0.2s ease;
+  color: rgb(228, 228, 228) !important;
+  background-color: rgb(43, 22, 13) !important;
+}
+
+.search-bar-search-button:hover {
+  transform: scale(1.11);
+  background-color: black !important;
+}
+
+.search-bar-search-button:active {
+  transform: scale(1);
 }

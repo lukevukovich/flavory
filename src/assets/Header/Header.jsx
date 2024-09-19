@@ -79,9 +79,13 @@ export default function Header({ setRecipeList }) {
             if (setRecipeList) {
               setRecipeList([]);
             }
-            const clearButton = document.querySelector(".search-bar-clear-button");
+            const clearButton = document.querySelector(
+              ".search-bar-clear-button"
+            );
+            const inputBar = document.querySelector(".search-bar-input");
             if (clearButton) {
               clearButton.click();
+              inputBar.placeholder = "search for recipes";
             }
             navigate("/");
           }}

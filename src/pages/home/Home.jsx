@@ -8,7 +8,6 @@ import { sayings } from "../../utils/Sayings";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { faCompass, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getRecipes } from "../../utils/RecipeAPI";
 import RecipePane from "../../assets/RecipePane/RecipePane";
 
 export default function Home() {
@@ -31,10 +30,7 @@ export default function Home() {
   // Set random saying on load
   useEffect(() => {
     const search = searchParams.get("search");
-    if (search !== null) {
-      searchRecipes(search);
-      navigate("/?search=" + search);
-    } else {
+    if (search === null) {
       navigate("/");
       setRecipeList([]);
       setMoreResultsLink(null);
@@ -44,30 +40,7 @@ export default function Home() {
     setSaying(sayings[randomIndex]);
   }, []);
 
-  // Search for recipes if search input is not empty
-  async function searchRecipes(search) {
-    if (search === "") {
-      return;
-    }
-    const result = await getRecipes(search);
-    if (result.hits.length > 0) {
-      setRecipeList(result.hits);
-    } else {
-      setRecipeList([]);
-    }
-    try {
-      setMoreResultsLink(result._links.next.href);
-    } catch (error) {
-      setMoreResultsLink(null);
-    }
-
-    if (result.count > 0) {
-      setSearchCount(result.count + " recipes");
-    } else {
-      setSearchCount(null);
-    }
-  }
-
+  // Set states for recipe list
   useEffect(() => {
     if (recipeList.length === 0) {
       recipePane.current.style.display = "none";
@@ -78,23 +51,18 @@ export default function Home() {
     }
   }, [recipeList]);
 
-  useEffect(() => {
-    if (searchCount === null) {
-      searchCountText.current.style.display = "none";
-    } else {
-      searchCountText.current.style.display = "flex";
-    }
-  }, [searchCount]);
-
   return (
     <div>
       <Header setRecipeList={setRecipeList}></Header>
       <div className="home-search-panel">
         <span className="home-search-prompt">{saying}</span>
         <SearchBar
+        recipeList={recipeList}
           setRecipeList={setRecipeList}
           setMoreResultsLink={setMoreResultsLink}
+          searchCount={searchCount}
           setSearchCount={setSearchCount}
+          searchCountText={searchCountText}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
           <div className="home-recipe-results-panel">
@@ -127,7 +95,7 @@ export default function Home() {
             icon={faCompass}
             className="discover-icon button-icon"
           />
-          discover
+          discover more
         </button>
       </div>
       <Footer></Footer>

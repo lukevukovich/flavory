@@ -4,11 +4,15 @@ import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { getRecipes } from "../../utils/RecipeAPI";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { formatNumber } from "../../utils/Number";
 
 export default function SearchBar({
+  recipeList,
   setRecipeList,
   setMoreResultsLink,
+  searchCount,
   setSearchCount,
+  searchCountText,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -18,21 +22,25 @@ export default function SearchBar({
   const [previousSearch, setPreviousSearch] = useState("");
 
   // Ref for clear button
+  const inputBar = useRef(null);
   const clearButton = useRef(null);
 
   // Search for recipes
-  async function searchRecipes() {
-    if (search === "") {
+  async function searchRecipes(searchQuery) {
+    const searchString = searchQuery || search;
+
+    if (searchString === "") {
       return;
     }
 
-    if (search === previousSearch) {
+    if (searchString === previousSearch) {
       return;
     }
 
-    const result = await getRecipes(search);
+    const result = await getRecipes(searchString);
     if (result.hits.length > 0) {
       setRecipeList(result.hits);
+      inputBar.current.placeholder = "search for recipes";
       try {
         setMoreResultsLink(result._links.next.href);
       } catch (error) {
@@ -41,11 +49,13 @@ export default function SearchBar({
     } else {
       setRecipeList([]);
       setMoreResultsLink(null);
+      inputBar.current.placeholder = "no recipes found, search again";
+      setSearch("");
     }
-    setPreviousSearch(search);
+    setPreviousSearch(searchString);
 
     if (result.count > 0) {
-      setSearchCount(result.count + " recipes");
+      setSearchCount(formatNumber(result.count) + " recipes");
     } else {
       setSearchCount(null);
     }
@@ -53,11 +63,13 @@ export default function SearchBar({
 
   // Set search input on load
   useEffect(() => {
-    const search = searchParams.get("search");
-    if (search !== null) {
-      setSearch(search);
-      setPreviousSearch(search);
+    const searchString = searchParams.get("search");
+    if (searchString !== null) {
+      setSearch(searchString);
+      setPreviousSearch(searchString);
+      searchRecipes(searchString);
     } else {
+      inputBar.current.placeholder = "search for recipes";
       setSearch("");
     }
   }, []);
@@ -71,9 +83,19 @@ export default function SearchBar({
     }
   }, [search]);
 
+  // Show search count text when search count is not null
+  useEffect(() => {
+    if (searchCount === null) {
+      searchCountText.current.style.display = "none";
+    } else {
+      searchCountText.current.style.display = "flex";
+    }
+  }, [searchCount]);
+
   return (
     <div className="search-bar">
       <button
+        className="search-bar-search-button"
         onClick={() => {
           searchRecipes();
         }}
@@ -82,7 +104,9 @@ export default function SearchBar({
       </button>
       <input
         type="text"
-        placeholder="search for recipes..."
+        className="search-bar-input"
+        ref={inputBar}
+        placeholder="search for recipes"
         value={search}
         onChange={(e) => {
           setPreviousSearch(search);

@@ -53,7 +53,7 @@
 }
 
 .discover-home {
-  margin-top: 120px !important;
+  margin-top: 140px !important;
   margin-bottom: 40px !important;
 }
 
@@ -73,6 +73,10 @@
   .home-recipe-results-count {
     font-size: 13px;
     margin-right: 16px;
+  }
+
+  .discover-home {
+    font-size: 16px !important;
   }
 }
 

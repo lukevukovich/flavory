@@ -10,7 +10,7 @@ import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home/Home";
 import Discover from "./pages/Discover/Discover";
 import Saved from "./pages/Saved/Saved";
-import Recipe from "./pages/Recipe/Recipe";
+import NotFound from "./pages/NotFound";
 import "./App.css";
 
 // router and routes
@@ -20,8 +20,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="discover" element={<Discover />} />
       <Route path="saved" element={<Saved />} />
-      <Route path="recipe/:id" element={<Recipe />} />
-      <Route path="*" element={<Home />} />
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );
