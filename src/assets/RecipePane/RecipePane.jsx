@@ -3,17 +3,22 @@ import "./RecipePane.css";
 import "../../App.css";
 import { getRecipeID } from "../../utils/RecipeAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getNextRecipes } from "../../utils/RecipeAPI";
 import { useEffect, useRef } from "react";
+import "../SearchBar/SearchBar.css";
+import { faLemon, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function RecipePane({
   recipeList,
   setRecipeList,
   moreResultsLink,
   setMoreResultsLink,
+  isLoading,
+  setIsLoading,
+  loadMoreIcon,
+  setLoadMoreIcon,
 }) {
-  // Ref for load more button
+  // Refs
   const loadMoreButton = useRef(null);
 
   // Load more results when the load more button is clicked
@@ -22,6 +27,10 @@ export default function RecipePane({
     const queryParams = parsedUrl.searchParams;
     const recipeQuery = queryParams.get("q");
     const continueID = queryParams.get("_cont");
+
+    loadMoreButton.current.disabled = true;
+    setLoadMoreIcon(faLemon);
+    setIsLoading(true);
 
     const result = await getNextRecipes(recipeQuery, continueID);
     if (result.hits.length > 0) {
@@ -32,6 +41,10 @@ export default function RecipePane({
     } catch (error) {
       setMoreResultsLink(null);
     }
+
+    setIsLoading(false);
+    setLoadMoreIcon(faPlus);
+    loadMoreButton.current.disabled = false;
   }
 
   // Hide load more button when there are no more results
@@ -46,8 +59,8 @@ export default function RecipePane({
   return (
     <div className="recipe-pane">
       <div className="recipe-pane-container">
-        {recipeList.map((recipe) => (
-          <RecipeTile key={getRecipeID(recipe)} recipe={recipe} />
+        {recipeList.map((recipe, index) => (
+          <RecipeTile key={index} recipe={recipe} />
         ))}
       </div>
       <button
@@ -58,8 +71,8 @@ export default function RecipePane({
         }}
       >
         <FontAwesomeIcon
-          icon={faPlus}
-          className="button-icon"
+          icon={loadMoreIcon}
+          className={`button-icon ${isLoading ? "loading-icon" : ""}`}
         ></FontAwesomeIcon>
         load more
       </button>

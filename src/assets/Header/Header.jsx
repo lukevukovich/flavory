@@ -8,6 +8,7 @@ import {
   faUser,
   faBookmark,
   faCompass,
+  faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,9 +24,10 @@ export default function Header({ setRecipeList }) {
   const menuPanel = useRef(null);
   const menuButton = useRef(null);
   const menuEmail = useRef(null);
+  const menuEmailBox = useRef(null);
 
   // State for sign in button text
-  const [userButtonText, setUserButtonText] = useState("sign in");
+  const [signInText, setSignInText] = useState("sign in");
 
   // Check if user is signed in and set email
   async function setEmailOnSignIn() {
@@ -34,11 +36,13 @@ export default function Header({ setRecipeList }) {
       const username = user.email.split("@")[0];
       menuEmail.current.innerHTML = username;
       menuEmail.current.style.display = "flex";
-      setUserButtonText("sign out");
+      menuEmailBox.current.style.display = "flex";
+      setSignInText(`sign out`);
       menuPanel.current.style.height = "175px";
     } else {
       menuEmail.current.style.display = "none";
-      setUserButtonText("sign in");
+      menuEmailBox.current.style.display = "none";
+      setSignInText("sign in");
       menuPanel.current.classList.remove("signed-in");
       menuPanel.current.style.height = "130px";
     }
@@ -116,31 +120,37 @@ export default function Header({ setRecipeList }) {
           className={`menu-panel  ${expanded ? "visible" : "hidden"}`}
           ref={menuPanel}
         >
-          <button className="menu-email menu-button" ref={menuEmail}></button>
+          <div className="menu-email" ref={menuEmailBox}>
+            <FontAwesomeIcon
+              icon={faCircleCheck}
+              className="menu-email-icon"
+            ></FontAwesomeIcon>
+            <span className="menu-email-text" ref={menuEmail}></span>
+          </div>
           <button
-            className="menu-button menu-button-showcase"
+            className="menu-button"
             onClick={async () => {
               const { isSignedIn, user } = await checkSignInStatus();
               if (isSignedIn) {
                 const success = await signOut();
                 if (success) {
                   setEmailOnSignIn();
-                  signInButton.current.innerHTML = "sign in";
                 }
               } else {
                 const success = await signIn();
                 if (success) {
                   setEmailOnSignIn();
-                  signInButton.current.innerHTML = "sign out";
                 }
               }
             }}
           >
-            <FontAwesomeIcon
-              icon={faUser}
-              className="menu-button-icon menu-button-icon-user"
-            ></FontAwesomeIcon>
-            {userButtonText}
+            <div className="menu-sign-in">
+              <FontAwesomeIcon
+                icon={faUser}
+                className="menu-button-icon menu-button-icon-user"
+              ></FontAwesomeIcon>
+              <span className="menu-sign-in-text">{signInText}</span>
+            </div>
           </button>
           <button
             className="menu-button"
@@ -150,7 +160,7 @@ export default function Header({ setRecipeList }) {
           >
             <FontAwesomeIcon
               icon={faCompass}
-              className="menu-button-icon"
+              className="menu-button-icon menu-button-icon-discover"
             ></FontAwesomeIcon>
             discover
           </button>

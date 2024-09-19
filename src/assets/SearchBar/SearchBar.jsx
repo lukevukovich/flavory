@@ -1,18 +1,20 @@
 import "./SearchBar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faXmark, faLemon } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
-import { getRecipes } from "../../utils/RecipeAPI";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { formatNumber } from "../../utils/Number";
+import "../../App.css";
 
 export default function SearchBar({
-  recipeList,
+  getRecipes,
   setRecipeList,
   setMoreResultsLink,
   searchCount,
   setSearchCount,
   searchCountText,
+  isLoading,
+  setIsLoading,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -20,10 +22,12 @@ export default function SearchBar({
   // State for search input
   const [search, setSearch] = useState("");
   const [previousSearch, setPreviousSearch] = useState("");
+  const [searchIcon, setSearchIcon] = useState(faSearch);
 
-  // Ref for clear button
+  // Refs
   const inputBar = useRef(null);
   const clearButton = useRef(null);
+  const searchButton = useRef(null);
 
   // Search for recipes
   async function searchRecipes(searchQuery) {
@@ -37,6 +41,10 @@ export default function SearchBar({
       return;
     }
 
+    searchButton.current.disabled = true;
+    setSearchIcon(faLemon);
+    setIsLoading(true);
+
     const result = await getRecipes(searchString);
     if (result.hits.length > 0) {
       setRecipeList(result.hits);
@@ -49,7 +57,7 @@ export default function SearchBar({
     } else {
       setRecipeList([]);
       setMoreResultsLink(null);
-      inputBar.current.placeholder = "no recipes found, search again";
+      inputBar.current.placeholder = "no recipes found, try again";
       setSearch("");
     }
     setPreviousSearch(searchString);
@@ -59,6 +67,10 @@ export default function SearchBar({
     } else {
       setSearchCount(null);
     }
+
+    setIsLoading(false);
+    setSearchIcon(faSearch);
+    searchButton.current.disabled = false;
   }
 
   // Set search input on load
@@ -95,48 +107,54 @@ export default function SearchBar({
   return (
     <div className="search-bar">
       <button
-        className="search-bar-search-button"
+        className="button search-bar-search-button"
+        ref={searchButton}
         onClick={() => {
           searchRecipes();
         }}
       >
-        <FontAwesomeIcon icon={faSearch} />
+        <FontAwesomeIcon
+          icon={searchIcon}
+          className={`${isLoading ? "loading-icon" : ""}`}
+        ></FontAwesomeIcon>
       </button>
-      <input
-        type="text"
-        className="search-bar-input"
-        ref={inputBar}
-        placeholder="search for recipes"
-        value={search}
-        onChange={(e) => {
-          setPreviousSearch(search);
-          setSearch(e.target.value.toLowerCase());
-          if (e.target.value === "") {
+      <div className="search-bar-panel">
+        <input
+          type="text"
+          className="search-bar-input"
+          ref={inputBar}
+          placeholder="search for recipes"
+          value={search}
+          onChange={(e) => {
+            setPreviousSearch(search);
+            setSearch(e.target.value.toLowerCase());
+            if (e.target.value === "") {
+              navigate("/");
+            } else {
+              navigate("/?search=" + e.target.value.toLowerCase());
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              searchRecipes();
+              e.currentTarget.blur();
+            }
+          }}
+        />
+        <button
+          ref={clearButton}
+          className="search-bar-clear-button"
+          onClick={() => {
+            setSearch("");
+            setPreviousSearch("");
+            setRecipeList([]);
+            setMoreResultsLink(null);
             navigate("/");
-          } else {
-            navigate("/?search=" + e.target.value.toLowerCase());
-          }
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            searchRecipes();
-            e.currentTarget.blur();
-          }
-        }}
-      />
-      <button
-        ref={clearButton}
-        className="search-bar-clear-button"
-        onClick={() => {
-          setSearch("");
-          setPreviousSearch("");
-          setRecipeList([]);
-          setMoreResultsLink(null);
-          navigate("/");
-        }}
-      >
-        <FontAwesomeIcon icon={faXmark} />
-      </button>
+          }}
+        >
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+      </div>
     </div>
   );
 }

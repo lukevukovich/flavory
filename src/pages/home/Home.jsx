@@ -6,9 +6,10 @@ import SearchBar from "../../assets/SearchBar/SearchBar";
 import { useState, useEffect, useRef } from "react";
 import { sayings } from "../../utils/Sayings";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { faCompass, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCompass, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipePane from "../../assets/RecipePane/RecipePane";
+import { getRecipes } from "../../utils/RecipeAPI";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -22,10 +23,12 @@ export default function Home() {
   // State for random saying
   const [saying, setSaying] = useState("");
 
-  // States for recipe list
+  // States for recipe list and searching
   const [recipeList, setRecipeList] = useState([]);
   const [moreResultsLink, setMoreResultsLink] = useState(null);
   const [searchCount, setSearchCount] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadMoreIcon, setLoadMoreIcon] = useState(faPlus);
 
   // Set random saying on load
   useEffect(() => {
@@ -57,12 +60,14 @@ export default function Home() {
       <div className="home-search-panel">
         <span className="home-search-prompt">{saying}</span>
         <SearchBar
-        recipeList={recipeList}
+          getRecipes={getRecipes}
           setRecipeList={setRecipeList}
           setMoreResultsLink={setMoreResultsLink}
           searchCount={searchCount}
           setSearchCount={setSearchCount}
           searchCountText={searchCountText}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
           <div className="home-recipe-results-panel">
@@ -82,6 +87,10 @@ export default function Home() {
             setRecipeList={setRecipeList}
             moreResultsLink={moreResultsLink}
             setMoreResultsLink={setMoreResultsLink}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            loadMoreIcon={loadMoreIcon}
+            setLoadMoreIcon={setLoadMoreIcon}
           ></RecipePane>
         </div>
         <button
