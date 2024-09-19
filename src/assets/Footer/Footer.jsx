@@ -5,12 +5,12 @@ export default function Header() {
     <div className="footer">
       <div className="footer-container">
       <div className="footer-note">
-        <text className="footer-heading">flavory</text>
-        <text className="footer-subtext">where every dish delights.</text>
+        <span className="footer-heading">flavory</span>
+        <span className="footer-subtext">where every dish delights.</span>
       </div>
       <div className="footer-disclaimer">
-        <text className="footer-heading">disclaimer</text>
-        <text className="footer-subtext">flavory does not host any recipes directly but instead showcases content from third-party providers.</text>
+        <span className="footer-heading">disclaimer</span>
+        <span className="footer-subtext">flavory does not host any recipes directly but instead showcases content from third-party providers.</span>
       </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import "./Header.css";
+import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUtensils,
@@ -12,7 +13,7 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn, signOut, checkSignInStatus } from "../../utils/Auth";
 
-export default function Header() {
+export default function Header({ setRecipeList }) {
   const navigate = useNavigate();
 
   // State for menu panel
@@ -73,18 +74,25 @@ export default function Header() {
     <div className="header">
       <div className="left">
         <button
-          className="header-button"
+          className="button"
           onClick={() => {
+            if (setRecipeList) {
+              setRecipeList([]);
+            }
+            const clearButton = document.querySelector(".search-bar-clear-button");
+            if (clearButton) {
+              clearButton.click();
+            }
             navigate("/");
           }}
         >
-          <FontAwesomeIcon icon={faUtensils} className="utensils-icon" />
+          <FontAwesomeIcon icon={faUtensils} className="button-icon" />
           flavory
         </button>
       </div>
       <div className="right">
         <button
-          className="header-button"
+          className="button"
           ref={menuButton}
           onClick={() => {
             if (expanded) {

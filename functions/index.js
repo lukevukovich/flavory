@@ -41,6 +41,40 @@ exports.getRecipes = onRequest(
   }
 );
 
+// Cloud function to handle Edamam API queries for the next page of results
+exports.getNextRecipes = onRequest(
+  { cors: true, secrets: [EDAMAM_APP_ID, EDAMAM_APP_KEY] },
+  async (req, res) => {
+    try {
+      // Get the Edamam API credentials
+      const appId = await EDAMAM_APP_ID.value();
+      const appKey = await EDAMAM_APP_KEY.value();
+
+      // Get query parameters from the request
+      const recipeQuery = req.query.q;
+      const continueID = req.query.cont;
+
+      if (!recipeQuery) {
+        return res.status(400).json({ error: "Recipe query is required" });
+      }
+      if (!continueID) {
+        return res.status(400).json({ error: "Continue ID is required" });
+      }
+
+      // Construct the API URL
+      let url = `${EDAMAM_API_URL}?type=public&q=${recipeQuery}&_cont=${continueID}&app_id=${appId}&app_key=${appKey}`;
+
+      // Make the API request to Edamam
+      const response = await axios.get(url);
+
+      // Respond with the API data
+      res.status(200).json(response.data);
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching next recipes" });
+    }
+  }
+);
+
 // Cloud function to handle Edamam API queries by recipe ID
 exports.getRecipeByID = onRequest(
   { cors: true, secrets: [EDAMAM_APP_ID, EDAMAM_APP_KEY] },

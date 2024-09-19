@@ -20,9 +20,11 @@ firebase emulators:start
 - https://flavory-f4009.web.app/
 
 ## To do
-- Fix sign in button margin
-- Load image promise?
-- Pagination
+- Search result count
 - Discover page
 - Recipe page
 - Database init
+- Save recipes
+- Saved page
+- Polish
+- Code cleanup

@@ -12,6 +12,49 @@ body {
   overflow-x: hidden;
 }
 
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-inline-start: 20px;
+  margin-inline-end: 20px;
+
+  outline: none;
+  border: none;
+  background-color: rgb(163, 52, 0);
+  padding: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  font-weight: normal;
+  font-size: 18px;
+  color: white;
+  border-radius: 25px;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: rgb(138, 44, 0);
+  transform: scale(1.07);
+}
+
+.button:active {
+  transform: scale(1);
+}
+
+.button-icon {
+  margin-right: 10px;
+  color: rgb(228, 228, 228);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

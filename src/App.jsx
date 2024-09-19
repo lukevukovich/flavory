@@ -20,7 +20,8 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="discover" element={<Discover />} />
       <Route path="saved" element={<Saved />} />
-      <Route path="recipe" element={<Recipe />} />
+      <Route path="recipe/:id" element={<Recipe />} />
+      <Route path="*" element={<Home />} />
     </Route>
   )
 );
