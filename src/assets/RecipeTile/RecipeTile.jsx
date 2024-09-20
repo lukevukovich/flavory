@@ -5,7 +5,6 @@ export default function RecipeTile({ recipe }) {
   return (
     <div
       className="recipe-tile"
-      id={getRecipeID(recipe)}
       onClick={(e) => {
         // Open the recipe in a new tab
         window.open(recipe.recipe.url, "_blank", "noopener,noreferrer");

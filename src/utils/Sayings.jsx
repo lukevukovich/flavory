@@ -40,5 +40,5 @@ export const sayings = [
   "the perfect meal is just a recipe away!",
   "create your masterpiece in the kitchen!",
   "ready for a tasty twist?",
-  "find your next favorite recipe!"
+  "find your next favorite recipe!",
 ];
