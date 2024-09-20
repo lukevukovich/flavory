@@ -8,7 +8,7 @@ import { sayings } from "../../utils/Sayings";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { faCompass, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import RecipePane from "../../assets/RecipePane/RecipePane";
+import RecipeResults from "../../assets/RecipeResults/RecipeResults";
 import { getRecipes } from "../../utils/RecipeAPI";
 
 export default function Home() {
@@ -82,7 +82,7 @@ export default function Home() {
               {searchCount}
             </span>
           </div>
-          <RecipePane
+          <RecipeResults
             recipeList={recipeList}
             setRecipeList={setRecipeList}
             moreResultsLink={moreResultsLink}
@@ -91,7 +91,7 @@ export default function Home() {
             setIsLoading={setIsLoading}
             loadMoreIcon={loadMoreIcon}
             setLoadMoreIcon={setLoadMoreIcon}
-          ></RecipePane>
+          ></RecipeResults>
         </div>
         <button
           className="discover-home button"

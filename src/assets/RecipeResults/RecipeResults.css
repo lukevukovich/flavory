@@ -1,0 +1,10 @@
+.load-more-button {
+    display: flex;
+    margin-top: 40px;
+}
+
+@media (max-width: 470px) {
+    .load-more-button {
+        font-size: 16px !important;
+    }
+  }

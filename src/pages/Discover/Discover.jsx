@@ -1,22 +1,34 @@
 import "./Discover.css";
+import "../../App.css";
 import Header from "../../assets/Header/Header";
 import Footer from "../../assets/Footer/Footer";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { recipeTypes, recipeDescriptors } from "../../utils/RecipeData";
 import { useState } from "react";
 import { getRecipes } from "../../utils/RecipeAPI";
-import RecipeTile from "../../assets/RecipeTile/RecipeTile";
+import RecipePane from "../../assets/RecipePane/RecipePane";
+import { faRotateRight, faLemon } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Discover() {
+  // Controllers for random recipes
   const NUMBER_OF_QUERIES = 4;
   const NUMBER_OF_RECIPES = 4;
 
+  // States for recipe list
   const [titleList, setTitleList] = useState([]);
-
   const [recipeList, setRecipeList] = useState(
     Array(NUMBER_OF_QUERIES).fill([])
   );
 
+  // States for refreshing recipes
+  const refreshButton = useRef(null);
+  const discoverHeading = useRef(null);
+  const [discoverText, setDiscoverText] = useState("discover new recipes!");
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshIcon, setRefreshIcon] = useState(faRotateRight);
+
+  // Generate random queries from recipe data
   function generateRandomQueries() {
     let randomQueries = [];
     let randomTypes = [];
@@ -31,6 +43,7 @@ export default function Discover() {
     return { randomQueries, randomTypes };
   }
 
+  // Get random indexes for recipes, no duplicates
   function getRandomIndexes(recipes) {
     try {
       let availableNumbers = Array.from(
@@ -51,6 +64,7 @@ export default function Discover() {
     }
   }
 
+  // Get random recipes from random queries
   async function getRandomRecipes(randomQueries, randomTypes) {
     let allRandomRecipes = [];
 
@@ -77,28 +91,62 @@ export default function Discover() {
       }
     }
 
+    if (allRandomRecipes.length === 0) {
+      setDiscoverText("unable to fetch recipes, refresh to try again!");
+      discoverHeading.current.style.marginBottom = "338px";
+    } else {
+      setDiscoverText("discover new recipes!");
+      discoverHeading.current.style.marginBottom = "50px";
+    }
+
     setRecipeList(allRandomRecipes);
-    console.log(randomQueries);
     setTitleList(randomTypes);
   }
 
-  useEffect(() => {
+  // Handler for fetching/refreshing recipes
+  async function handleRandomRecipes() {
+    refreshButton.current.disabled = true;
+    setRefreshIcon(faLemon);
+    setDiscoverText("fetching recipes...");
+    setIsLoading(true);
+
     const { randomQueries, randomTypes } = generateRandomQueries();
-    getRandomRecipes(randomQueries, randomTypes);
+    await getRandomRecipes(randomQueries, randomTypes);
+
+    setIsLoading(false);
+    setRefreshIcon(faRotateRight);
+    refreshButton.current.disabled = false;
+  }
+
+  useEffect(() => {
+    handleRandomRecipes();
   }, []);
 
   return (
     <div>
       <Header />
       <div className="discover-panel">
+        <div className="discover-heading" ref={discoverHeading}>
+          <span className="discover-heading-text">{discoverText}</span>
+          <button
+            className="button discover-refresh-button"
+            ref={refreshButton}
+            onClick={() => {
+              handleRandomRecipes();
+            }}
+          >
+            <FontAwesomeIcon
+              icon={refreshIcon}
+              className={`${isLoading ? "refreshing-icon" : ""}`}
+            ></FontAwesomeIcon>
+          </button>
+        </div>
         <div className="recipe-pane">
           {recipeList.map((singleRecipeList, index) => (
             <div key={index} className="single-recipe-container">
               <span className="recipe-pane-title">{titleList[index]}</span>
               <div className="single-recipe-pane">
-                {singleRecipeList.map((recipe, tile_index) => (
-                  <RecipeTile key={tile_index} recipe={recipe} />
-                ))}
+                <RecipePane recipeList={singleRecipeList} />
               </div>
             </div>
           ))}

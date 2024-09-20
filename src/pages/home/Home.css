@@ -3,9 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
   margin-top: 90px;
-  margin-bottom: 100px;
+  margin-bottom: 101px;
 }
 
 .home-search-prompt {
@@ -14,8 +13,8 @@
   color: white;
   margin-bottom: 50px;
   text-align: center;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .home-recipe-results-panel {
@@ -57,14 +56,11 @@
   margin-bottom: 40px !important;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 470px) {
   .home-search-prompt {
     font-size: 25px;
     margin-bottom: 64px;
   }
-}
-
-@media (max-width: 470px) {
   .home-recipe-results {
     margin-left: 16px;
     font-size: 16px;

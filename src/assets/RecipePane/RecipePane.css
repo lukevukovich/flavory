@@ -11,11 +11,6 @@
     padding: 20px;
 }
 
-.load-more-button {
-    display: flex;
-    margin-top: 40px;
-}
-
 @media (max-width: 920px) {
     .recipe-pane-container {
         grid-template-columns: repeat(3, 1fr);
@@ -34,13 +29,9 @@
         padding-left: 15px;
         padding-right: 15px;
     }
-
-    .load-more-button {
-        font-size: 16px !important;
-    }
   }
 
-@media (max-width: 345px) {
+@media (max-width: 350px) {
     .recipe-pane-container {
         grid-template-columns: repeat(1, 1fr);
     }
