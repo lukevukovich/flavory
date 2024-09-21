@@ -58,7 +58,7 @@ export default function Home() {
     <div>
       <Header setRecipeList={setRecipeList}></Header>
       <div className="home-search-panel">
-        <span className="home-search-prompt">{saying}</span>
+        <span className="heading-text home-search-prompt">{saying}</span>
         <SearchBar
           getRecipes={getRecipes}
           setRecipeList={setRecipeList}

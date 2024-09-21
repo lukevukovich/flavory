@@ -12,6 +12,21 @@ body {
   overflow-x: hidden;
 }
 
+.heading-text {
+  font-size: 35px;
+  font-weight: 500;
+  color: white;
+  text-align: center;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+@media (max-width: 470px) {
+  .heading-text {
+    font-size: 28px;
+  }
+}
+
 .button {
   display: flex;
   justify-content: center;

@@ -24,23 +24,32 @@ export default function Discover() {
   // States for refreshing recipes
   const refreshButton = useRef(null);
   const discoverHeading = useRef(null);
+  const [loadMoreText, setLoadMoreText] = useState("load more");
   const [discoverText, setDiscoverText] = useState("discover new recipes!");
   const [isLoading, setIsLoading] = useState(false);
   const [refreshIcon, setRefreshIcon] = useState(faRotateRight);
 
-  // Generate random queries from recipe data
+  // Generate random queries from recipe data with unique random types
   function generateRandomQueries() {
     let randomQueries = [];
-    let randomTypes = [];
-    for (let i = 0; i < NUMBER_OF_QUERIES; i++) {
+    let randomTypes = new Set(); // To keep track of unique random types
+
+    while (randomTypes.size < Math.min(NUMBER_OF_QUERIES, recipeTypes.length)) {
       let randomType =
         recipeTypes[Math.floor(Math.random() * recipeTypes.length)];
-      let randomDescriptor =
-        recipeDescriptors[Math.floor(Math.random() * recipeDescriptors.length)];
-      randomQueries.push(randomDescriptor + " " + randomType);
-      randomTypes.push(randomType.toLowerCase());
+
+      // Ensure the type hasn't already been used
+      if (!randomTypes.has(randomType.toLowerCase())) {
+        let randomDescriptor =
+          recipeDescriptors[
+            Math.floor(Math.random() * recipeDescriptors.length)
+          ];
+        randomQueries.push(randomDescriptor + " " + randomType);
+        randomTypes.add(randomType.toLowerCase()); // Add to set to avoid duplicates
+      }
     }
-    return { randomQueries, randomTypes };
+
+    return { randomQueries, randomTypes: Array.from(randomTypes) };
   }
 
   // Get random indexes for recipes, no duplicates
@@ -82,6 +91,7 @@ export default function Discover() {
               continue;
             }
             randomRecipes.push(recipes[randomIndexes[j]]);
+            console.log(randomIndexes[j]);
           }
 
           allRandomRecipes[i] = randomRecipes;
@@ -100,6 +110,7 @@ export default function Discover() {
     }
 
     setRecipeList(allRandomRecipes);
+    console.log(allRandomRecipes);
     setTitleList(randomTypes);
   }
 
@@ -107,7 +118,7 @@ export default function Discover() {
   async function handleRandomRecipes() {
     refreshButton.current.disabled = true;
     setRefreshIcon(faLemon);
-    setDiscoverText("fetching recipes...");
+    setLoadMoreText("loading...");
     setIsLoading(true);
 
     const { randomQueries, randomTypes } = generateRandomQueries();
@@ -115,6 +126,7 @@ export default function Discover() {
 
     setIsLoading(false);
     setRefreshIcon(faRotateRight);
+    setLoadMoreText("load more");
     refreshButton.current.disabled = false;
   }
 
@@ -127,7 +139,9 @@ export default function Discover() {
       <Header />
       <div className="discover-panel">
         <div className="discover-heading" ref={discoverHeading}>
-          <span className="discover-heading-text">{discoverText}</span>
+          <span className="heading-text discover-heading-text">
+            {discoverText}
+          </span>
           <button
             className="button discover-refresh-button"
             ref={refreshButton}
@@ -139,6 +153,7 @@ export default function Discover() {
               icon={refreshIcon}
               className={`${isLoading ? "refreshing-icon" : ""}`}
             ></FontAwesomeIcon>
+            <span className="refresh-button-text">{loadMoreText}</span>
           </button>
         </div>
         <div className="recipe-pane">
