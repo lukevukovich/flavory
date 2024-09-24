@@ -8,6 +8,8 @@
   cursor: pointer;
   outline-offset: -1px;
   border-radius: 10px;
+  z-index: 100;
+  position: relative;
 }
 
 .recipe-tile:hover {
@@ -43,6 +45,21 @@
   border-top-right-radius: 10px;
 }
 
+.recipe-tile-save {
+  position: absolute;
+  right: 0px;
+  z-index: 200;
+  border-radius: 6px;
+  font-size: 18px;
+  padding: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-right: 10px;
+  margin-top: 10px;
+  outline: 2px solid rgb(240, 163, 127);
+  opacity: 0.7;
+}
+
 @media (max-width: 470px) {
   .recipe-tile {
     width: 150px;
@@ -65,5 +82,14 @@
 
   .recipe-tile-image {
     min-height: 150px;
+  }
+
+  .recipe-tile-save {
+    font-size: 14px;
+    padding: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 8px;
+    margin-top: 8px;
   }
 }

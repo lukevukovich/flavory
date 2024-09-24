@@ -4,13 +4,13 @@
   align-items: center;
   justify-content: center;
   margin-top: 90px;
-  margin-bottom: 75px;
+  margin-bottom: 53px;
 }
 
 .discover-heading {
   padding-left: 25px;
   padding-right: 25px;
-  margin-bottom: 40px !important;
+  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;

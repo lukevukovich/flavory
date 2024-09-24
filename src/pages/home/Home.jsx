@@ -29,6 +29,7 @@ export default function Home() {
   const [searchCount, setSearchCount] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadMoreIcon, setLoadMoreIcon] = useState(faPlus);
+  const [loadMoreText, setLoadMoreText] = useState("load more");
 
   // Set random saying on load
   useEffect(() => {
@@ -91,6 +92,8 @@ export default function Home() {
             setIsLoading={setIsLoading}
             loadMoreIcon={loadMoreIcon}
             setLoadMoreIcon={setLoadMoreIcon}
+            loadMoreText={loadMoreText}
+            setLoadMoreText={setLoadMoreText}
           ></RecipeResults>
         </div>
         <button

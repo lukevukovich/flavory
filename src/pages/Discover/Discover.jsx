@@ -91,7 +91,6 @@ export default function Discover() {
               continue;
             }
             randomRecipes.push(recipes[randomIndexes[j]]);
-            console.log(randomIndexes[j]);
           }
 
           allRandomRecipes[i] = randomRecipes;
@@ -103,14 +102,13 @@ export default function Discover() {
 
     if (allRandomRecipes.length === 0) {
       setDiscoverText("unable to fetch recipes, refresh to try again!");
-      discoverHeading.current.style.marginBottom = "338px";
+      discoverHeading.current.style.marginBottom = "320px";
     } else {
       setDiscoverText("discover new recipes!");
-      discoverHeading.current.style.marginBottom = "50px";
+      discoverHeading.current.style.marginBottom = "40px";
     }
 
     setRecipeList(allRandomRecipes);
-    console.log(allRandomRecipes);
     setTitleList(randomTypes);
   }
 
@@ -130,6 +128,7 @@ export default function Discover() {
     refreshButton.current.disabled = false;
   }
 
+  // Load random recipes on load
   useEffect(() => {
     handleRandomRecipes();
   }, []);

@@ -2,11 +2,10 @@
 flavory is a recipe app that helps you discover, save, and enjoy flavorful meals.
 
 ## To do
-- Remove duplicate recipes
+- DB collection setup
+- Save recipes functionality
 - Saved page
-- Save tags on RecipeTile
-- Database init
-- Save recipes
+- Remove duplicate recipes
 - Polish
 - Test
 - Code cleanup

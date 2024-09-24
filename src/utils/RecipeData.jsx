@@ -34,7 +34,7 @@ export const recipeTypes = [
   "Seitan",
   "Falafel",
 
-  // Vegetables & Plant-based
+  // Vegetables & Plant based
   "Mushrooms",
   "Kale",
   "Spinach",
@@ -187,11 +187,11 @@ export const recipeTypes = [
   "Stuffed Chicken",
   "Vegan",
   "Vegetarian",
-  "Gluten-Free",
+  "Gluten Free",
   "Keto",
   "Paleo",
-  "Low-Carb",
-  "High-Protein",
+  "Low Carb",
+  "High Protein",
   "Mediterranean",
   "Middle Eastern",
   "Mexican",

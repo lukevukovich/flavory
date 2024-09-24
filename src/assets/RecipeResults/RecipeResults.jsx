@@ -3,7 +3,7 @@ import "./RecipeResults.css";
 import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getNextRecipes } from "../../utils/RecipeAPI";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../SearchBar/SearchBar.css";
 import { faLemon, faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,6 +16,8 @@ export default function RecipeResults({
   setIsLoading,
   loadMoreIcon,
   setLoadMoreIcon,
+  loadMoreText,
+  setLoadMoreText,
 }) {
   // Refs
   const loadMoreButton = useRef(null);
@@ -29,6 +31,7 @@ export default function RecipeResults({
 
     loadMoreButton.current.disabled = true;
     setLoadMoreIcon(faLemon);
+    setLoadMoreText("loading...");
     setIsLoading(true);
 
     const result = await getNextRecipes(recipeQuery, continueID);
@@ -42,6 +45,7 @@ export default function RecipeResults({
     }
 
     setIsLoading(false);
+    setLoadMoreText("load more");
     setLoadMoreIcon(faPlus);
     loadMoreButton.current.disabled = false;
   }
@@ -69,7 +73,7 @@ export default function RecipeResults({
           icon={loadMoreIcon}
           className={`button-icon ${isLoading ? "loading-icon" : ""}`}
         ></FontAwesomeIcon>
-        load more
+        {loadMoreText}
       </button>
     </div>
   );
