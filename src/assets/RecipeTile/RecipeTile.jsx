@@ -33,7 +33,7 @@ export default function RecipeTile({ recipe }) {
       id={getRecipeID(recipe)}
       onClick={(e) => {
         // Open the recipe in a new tab
-        if (e.target.className === "button recipe-tile-save") {
+        if (e.target.tagName === "BUTTON" || e.target.tagName === "svg" || e.target.tagName === "path") {
           return;
         }
         window.open(recipe.recipe.url, "_blank", "noopener,noreferrer");
