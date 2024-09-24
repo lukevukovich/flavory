@@ -13,14 +13,14 @@ export default function RecipeResults({
   moreResultsLink,
   setMoreResultsLink,
   isLoading,
-  setIsLoading,
-  loadMoreIcon,
-  setLoadMoreIcon,
-  loadMoreText,
-  setLoadMoreText,
+  setIsLoading
 }) {
   // Refs
   const loadMoreButton = useRef(null);
+
+  // States for load more button
+  const [loadMoreText, setLoadMoreText] = useState("load more");
+  const [loadMoreIcon, setLoadMoreIcon] = useState(faPlus);
 
   // Load more results when the load more button is clicked
   async function loadMoreResults() {

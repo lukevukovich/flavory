@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as faBookmarked } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
+import { checkSignInStatus } from "../../utils/Auth";
 
 export default function RecipeTile({ recipe }) {
   // State for saved recipes
@@ -33,7 +34,11 @@ export default function RecipeTile({ recipe }) {
       id={getRecipeID(recipe)}
       onClick={(e) => {
         // Open the recipe in a new tab
-        if (e.target.tagName === "BUTTON" || e.target.tagName === "svg" || e.target.tagName === "path") {
+        if (
+          e.target.tagName === "BUTTON" ||
+          e.target.tagName === "svg" ||
+          e.target.tagName === "path"
+        ) {
           return;
         }
         window.open(recipe.recipe.url, "_blank", "noopener,noreferrer");
