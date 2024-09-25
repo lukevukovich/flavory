@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCNAnFvLqNKAk_Zi8_4QWzmjwAUrp7Tqo8",
-  authDomain: "flavory-f4009.firebaseapp.com",
-  projectId: "flavory-f4009",
-  storageBucket: "flavory-f4009.appspot.com",
-  messagingSenderId: "8958390883",
-  appId: "1:8958390883:web:9e3fb13ab83208f88d3e56",
-  measurementId: "G-7BBZ2PTP4R",
+  apiKey: "AIzaSyDv1AdiaodjBXTBn91YVuABwF5gSLaLj4M",
+  authDomain: "flavory2.firebaseapp.com",
+  projectId: "flavory2",
+  storageBucket: "flavory2.appspot.com",
+  messagingSenderId: "54926408365",
+  appId: "1:54926408365:web:a0560bcbbf5afadacd2424",
+  measurementId: "G-6NNCPWMNB9",
 };
 
 // Initialize Firebase

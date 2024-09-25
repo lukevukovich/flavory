@@ -1,9 +1,9 @@
 import { checkSignInStatus } from "./Auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
-const GET_RECIPES_API = "https://getrecipes-tshqabnweq-uc.a.run.app";
-const GET_NEXT_RECIPES_API = "https://getnextrecipes-tshqabnweq-uc.a.run.app";
-const GET_RECIPE_BY_ID_API = "https://getrecipebyid-tshqabnweq-uc.a.run.app";
+const GET_RECIPES_API = "https://getrecipes-v4rowkce3a-uc.a.run.app";
+const GET_NEXT_RECIPES_API = "https://getnextrecipes-v4rowkce3a-uc.a.run.app";
+const GET_RECIPE_BY_ID_API = "https://getrecipebyid-v4rowkce3a-uc.a.run.app";
 
 // Query recipes from the Edamam API and Firebase cloud function
 export async function getRecipes(query) {
@@ -128,7 +128,7 @@ export async function getSavedRecipes() {
     const result = await getSavedRecipesFunction();
     return result.data;
   } catch (error) {
-    return {"recipes": []};
+    return { recipes: [] };
   }
 }
 

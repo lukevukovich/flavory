@@ -4,6 +4,11 @@ const admin = require("firebase-admin");
 const { onRequest, onCall } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 
+// Initialize the Firebase SDK
+admin.initializeApp();
+const db = admin.firestore();
+const storage = admin.storage();
+
 // Get the Edamam API credentials from the environment
 const EDAMAM_APP_ID = defineSecret("APP_ID");
 const EDAMAM_APP_KEY = defineSecret("APP_KEY");
@@ -11,10 +16,6 @@ const EDAMAM_API_URL = "https://api.edamam.com/api/recipes/v2";
 
 // Get the Firestore collection name for saved recipes
 const SAVED_RECIPES_COLLECTION = "savedRecipes";
-
-// Initialize the Firebase Admin SDK
-admin.initializeApp();
-const db = admin.firestore();
 
 // Cloud function to handle Edamam API queries
 exports.getRecipes = onRequest(
@@ -154,7 +155,7 @@ exports.saveRecipe = onCall(async (request) => {
   // Get the user ID and recipe data from the request
   const userId = request.auth.uid;
   let recipe = request.data.recipe;
-  recipe.recipe.userId = userId;
+  const recipeId = getRecipeID(recipe);
 
   // Validate input data
   if (!recipe) {
@@ -163,7 +164,7 @@ exports.saveRecipe = onCall(async (request) => {
 
   try {
     // Create a unique document ID using userId and recipeId
-    const docId = `${userId}_${getRecipeID(recipe)}`;
+    const docId = `${userId}_${recipeId}`;
     const docRef = db.collection(SAVED_RECIPES_COLLECTION).doc(docId);
 
     // Check if the document already exists
@@ -174,7 +175,16 @@ exports.saveRecipe = onCall(async (request) => {
       await docRef.delete();
       return { success: true, message: "Recipe unsaved successfully." };
     } else {
-      // If the document doesn't exist, save it
+      // Upload image to Firebase Storage if not already uploaded
+      // const newImageUrl = await uploadImageToFirebaseStorage(
+      //   recipe.recipe.image,
+      //   recipeId
+      // );
+
+      // // Set image URL and user ID
+      // recipe.recipe.image = newImageUrl;
+      recipe.recipe.userId = userId;
+
       await docRef.set({
         recipe: recipe,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -233,6 +243,32 @@ exports.getSavedRecipes = onCall(async (request) => {
     );
   }
 });
+
+// Helper function to upload an image to Firebase Storage
+async function uploadImageToFirebaseStorage(imageUrl, recipeId) {
+  const bucket = storage.bucket();
+  const fileName = `images/recipes/${recipeId}.jpg`;
+  const file = bucket.file(fileName);
+
+  // Check if file already exists
+  const [exists] = await file.exists();
+  if (exists) {
+    // If the file already exists, get the download URL
+    const [url] = await file.getSignedUrl({
+      action: "read",
+      expires: "03-09-2500",
+    });
+    return url;
+  } else {
+    // Upload the image if it doesn't exist
+    await file.save(imageUrl);
+    const [url] = await file.getSignedUrl({
+      action: "read",
+      expires: "03-09-2500",
+    });
+    return url;
+  }
+}
 
 // Helper function to extract the recipe ID from the recipe hit
 function getRecipeID(recipe_hit) {

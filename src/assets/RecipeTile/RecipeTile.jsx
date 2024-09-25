@@ -70,6 +70,7 @@ export default function RecipeTile({ recipe }) {
         ) {
           return;
         }
+        console.log(recipe);
         window.open(recipe.recipe.url, "_blank", "noopener,noreferrer");
       }}
       onMouseEnter={() => {
