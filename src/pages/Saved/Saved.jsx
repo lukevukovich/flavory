@@ -47,7 +47,7 @@ export default function Saved() {
   useEffect(() => {
     const search = searchParams.get("search");
     if (search === null) {
-      navigate("saved");
+      navigate("/saved");
       setRecipeList([]);
       setMoreResultsLink(null);
     }
