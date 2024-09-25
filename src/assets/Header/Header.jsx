@@ -135,11 +135,17 @@ export default function Header({ setRecipeList }) {
                 const success = await signOut();
                 if (success) {
                   setEmailOnSignIn();
+                  navigate("/");
                 }
               } else {
                 const success = await signIn();
                 if (success) {
                   setEmailOnSignIn();
+                  if (window.location.pathname === "/saved") {
+                    window.location.reload();
+                  } else {
+                    navigate("/saved");
+                  }
                 }
               }
             }}

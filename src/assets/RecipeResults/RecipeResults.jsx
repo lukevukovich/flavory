@@ -13,7 +13,7 @@ export default function RecipeResults({
   moreResultsLink,
   setMoreResultsLink,
   isLoading,
-  setIsLoading
+  setIsLoading,
 }) {
   // Refs
   const loadMoreButton = useRef(null);
@@ -29,9 +29,6 @@ export default function RecipeResults({
     const recipeQuery = queryParams.get("q");
     const continueID = queryParams.get("_cont");
 
-    loadMoreButton.current.disabled = true;
-    setLoadMoreIcon(faLemon);
-    setLoadMoreText("loading...");
     setIsLoading(true);
 
     const result = await getNextRecipes(recipeQuery, continueID);
@@ -45,10 +42,20 @@ export default function RecipeResults({
     }
 
     setIsLoading(false);
-    setLoadMoreText("load more");
-    setLoadMoreIcon(faPlus);
-    loadMoreButton.current.disabled = false;
   }
+
+  // Set load more button text and icon based on loading state
+  useEffect(() => {
+    if (isLoading) {
+      loadMoreButton.current.disabled = true;
+      setLoadMoreIcon(faLemon);
+      setLoadMoreText("loading...");
+    } else {
+      loadMoreButton.current.disabled = false;
+      setLoadMoreIcon(faPlus);
+      setLoadMoreText("load more");
+    }
+  }, [isLoading]);
 
   // Hide load more button when there are no more results
   useEffect(() => {

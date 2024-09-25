@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as faBookmarked } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
+import { saveRecipe } from "../../utils/RecipeAPI";
 import { checkSignInStatus } from "../../utils/Auth";
 
 export default function RecipeTile({ recipe }) {
@@ -14,9 +15,37 @@ export default function RecipeTile({ recipe }) {
   // Ref for save button
   const saveButton = useRef(null);
 
+  // Handle save button visibility
+  async function handleSaveButton() {
+    const { isSignedIn, user } = await checkSignInStatus();
+
+    saveButton.current.disable = true;
+
+    if (isSignedIn) {
+      saveButton.current.disabled = false;
+      saveButton.current.style.visibility = "visible";
+    }
+  }
+
+  // Set save states on load
+  useEffect(() => {
+    handleSaveButton();
+    setSaved(recipe.recipe.saved);
+  }, []);
+
   // Handle saving recipes
-  function handleRecipeSave() {
-    setSaved(!saved);
+  async function handleRecipeSave() {
+    const prev = saved;
+    try {
+      // Save the recipe
+      saveButton.current.disabled = true;
+      setSaved(!saved);
+      await saveRecipe(recipe);
+      saveButton.current.disabled = false;
+    } catch (error) {
+      setSaved(prev);
+      saveButton.current.disabled = false;
+    }
   }
 
   // Set save icon based on saved state
@@ -43,6 +72,12 @@ export default function RecipeTile({ recipe }) {
         }
         window.open(recipe.recipe.url, "_blank", "noopener,noreferrer");
       }}
+      onMouseEnter={() => {
+        saveButton.current.style.opacity = "1.0";
+      }}
+      onMouseLeave={() => {
+        saveButton.current.style.opacity = "0.7";
+      }}
     >
       <img
         className="recipe-tile-image"
@@ -60,12 +95,6 @@ export default function RecipeTile({ recipe }) {
         ref={saveButton}
         onClick={() => {
           handleRecipeSave();
-        }}
-        onMouseEnter={() => {
-          saveButton.current.style.opacity = "1.0";
-        }}
-        onMouseLeave={() => {
-          saveButton.current.style.opacity = "0.7";
         }}
       >
         <FontAwesomeIcon icon={saveIcon}></FontAwesomeIcon>

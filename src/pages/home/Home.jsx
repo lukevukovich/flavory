@@ -6,7 +6,7 @@ import SearchBar from "../../assets/SearchBar/SearchBar";
 import { useState, useEffect, useRef } from "react";
 import { sayings } from "../../utils/Sayings";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { faCompass, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCompass, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
 import { getRecipes } from "../../utils/RecipeAPI";

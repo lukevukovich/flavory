@@ -7,6 +7,7 @@ import { formatNumber } from "../../utils/Number";
 import "../../App.css";
 
 export default function SearchBar({
+  page,
   getRecipes,
   setRecipeList,
   setMoreResultsLink,
@@ -41,8 +42,6 @@ export default function SearchBar({
       return;
     }
 
-    searchButton.current.disabled = true;
-    setSearchIcon(faLemon);
     setIsLoading(true);
 
     const result = await getRecipes(searchString);
@@ -69,9 +68,17 @@ export default function SearchBar({
     }
 
     setIsLoading(false);
-    setSearchIcon(faSearch);
-    searchButton.current.disabled = false;
   }
+
+  useEffect(() => {
+    if (isLoading) {
+      searchButton.current.disabled = true;
+      setSearchIcon(faLemon);
+    } else {
+      searchButton.current.disabled = false;
+      setSearchIcon(faSearch);
+    }
+  }, [isLoading]);
 
   // Set search input on load
   useEffect(() => {
@@ -81,7 +88,13 @@ export default function SearchBar({
       setPreviousSearch(searchString);
       searchRecipes(searchString);
     } else {
-      inputBar.current.placeholder = "search for recipes";
+      let prompt;
+      if (page) {
+        prompt = page + " ";
+      } else {
+        prompt = "";
+      }
+      inputBar.current.placeholder = `search for ${prompt}recipes`;
       setSearch("");
     }
   }, []);
@@ -128,10 +141,12 @@ export default function SearchBar({
           onChange={(e) => {
             setPreviousSearch(search);
             setSearch(e.target.value.toLowerCase());
+            const goToEmpty = "/" + (page || "");
+            const goToSearch = "/" + (page || "\r");
             if (e.target.value === "") {
-              navigate("/");
+              navigate(goToEmpty);
             } else {
-              navigate("/?search=" + e.target.value.toLowerCase());
+              navigate(goToSearch + "?search=" + e.target.value.toLowerCase());
             }
           }}
           onKeyDown={(e) => {
