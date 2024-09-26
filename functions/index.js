@@ -176,13 +176,13 @@ exports.saveRecipe = onCall(async (request) => {
       return { success: true, message: "Recipe unsaved successfully." };
     } else {
       // Upload image to Firebase Storage if not already uploaded
-      // const newImageUrl = await uploadImageToFirebaseStorage(
-      //   recipe.recipe.image,
-      //   recipeId
-      // );
+      const newImageUrl = await uploadImageToFirebaseStorage(
+        recipe.recipe.image,
+        recipeId
+      );
 
-      // // Set image URL and user ID
-      // recipe.recipe.image = newImageUrl;
+      // Set image URL and user ID
+      recipe.recipe.image = newImageUrl;
       recipe.recipe.userId = userId;
 
       await docRef.set({
@@ -248,26 +248,24 @@ exports.getSavedRecipes = onCall(async (request) => {
 async function uploadImageToFirebaseStorage(imageUrl, recipeId) {
   const bucket = storage.bucket();
   const fileName = `images/recipes/${recipeId}.jpg`;
-  const file = bucket.file(fileName);
+  const storageFile = bucket.file(fileName); // Renamed variable
 
   // Check if file already exists
-  const [exists] = await file.exists();
-  if (exists) {
-    // If the file already exists, get the download URL
-    const [url] = await file.getSignedUrl({
-      action: "read",
-      expires: "03-09-2500",
+  const [exists] = await storageFile.exists();
+  if (!exists) {
+    // Download the image
+    const response = await axios.get(imageUrl, {
+      responseType: "arraybuffer",
     });
-    return url;
-  } else {
-    // Upload the image if it doesn't exist
-    await file.save(imageUrl);
-    const [url] = await file.getSignedUrl({
-      action: "read",
-      expires: "03-09-2500",
-    });
-    return url;
+    const imageBuffer = Buffer.from(response.data, "binary");
+
+    // Upload the image to Firebase Storage, make it public
+    await storageFile.save(imageBuffer);
+    await storageFile.makePublic();
   }
+
+  // Return the public URL of the image
+  return `https://storage.googleapis.com/${bucket.name}/${fileName}`;
 }
 
 // Helper function to extract the recipe ID from the recipe hit

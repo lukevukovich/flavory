@@ -70,7 +70,6 @@ export default function RecipeTile({ recipe }) {
         ) {
           return;
         }
-        console.log(recipe);
         window.open(recipe.recipe.url, "_blank", "noopener,noreferrer");
       }}
       onMouseEnter={() => {
@@ -80,11 +79,7 @@ export default function RecipeTile({ recipe }) {
         saveButton.current.style.opacity = "0.7";
       }}
     >
-      <img
-        className="recipe-tile-image"
-        src={recipe.recipe.image}
-        alt={recipe.recipe.label.toLowerCase()}
-      />
+      <img className="recipe-tile-image" src={recipe.recipe.image} />
       <span className="recipe-tile-title">
         {recipe.recipe.label.toLowerCase()}
       </span>
