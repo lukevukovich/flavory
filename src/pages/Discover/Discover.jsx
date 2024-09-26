@@ -25,7 +25,9 @@ export default function Discover() {
   const refreshButton = useRef(null);
   const discoverHeading = useRef(null);
   const [loadMoreText, setLoadMoreText] = useState("load more");
-  const [discoverText, setDiscoverText] = useState("discover fresh flavors and recipes!");
+  const [discoverText, setDiscoverText] = useState(
+    "discover fresh flavors and recipes!"
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [refreshIcon, setRefreshIcon] = useState(faRotateRight);
 
@@ -77,9 +79,17 @@ export default function Discover() {
   async function getRandomRecipes(randomQueries, randomTypes) {
     let allRandomRecipes = [];
 
-    for (let i = 0; i < NUMBER_OF_QUERIES; i++) {
-      try {
-        const result = await getRecipes(null, randomQueries[i]);
+    try {
+      // Create an array of promises for fetching recipes concurrently
+      const recipePromises = randomQueries.map((query) =>
+        getRecipes(null, query)
+      );
+
+      // Wait for all promises to resolve
+      const results = await Promise.all(recipePromises);
+
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
         if (result.hits.length > 0) {
           const recipes = result.hits;
           const randomIndexes = getRandomIndexes(recipes);
@@ -90,14 +100,14 @@ export default function Discover() {
             if (randomRecipe === undefined) {
               continue;
             }
-            randomRecipes.push(recipes[randomIndexes[j]]);
+            randomRecipes.push(randomRecipe);
           }
 
           allRandomRecipes[i] = randomRecipes;
         }
-      } catch (error) {
-        continue;
       }
+    } catch (error) {
+      pass;
     }
 
     if (allRandomRecipes.length === 0) {

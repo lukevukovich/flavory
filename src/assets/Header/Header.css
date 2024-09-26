@@ -20,6 +20,7 @@
 .left,
 .right {
   display: flex;
+  align-items: center;
 }
 
 .menu-icon {
@@ -34,6 +35,18 @@
 
 .caret-down-icon.rotate {
   transform: rotate(180deg);
+}
+
+.page-text {
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+}
+
+@media (max-width: 470px) {
+  .page-text {
+    font-size: 18px;
+  }
 }
 
 .menu-panel {
@@ -53,6 +66,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  height: 130px;
 }
 
 .menu-panel.visible {

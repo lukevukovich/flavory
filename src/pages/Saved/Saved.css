@@ -1,89 +1,98 @@
 .saved-search-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 90px;
-    margin-bottom: 101px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 90px;
+  margin-bottom: 101px;
+}
+
+.saved-search-prompt {
+  margin-bottom: 50px;
+}
+
+.saved-recipe-results-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+}
+
+.saved-recipe-results {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 19px;
+}
+
+.saved-recipe-results-icon {
+  margin-right: 10px;
+}
+
+.saved-recipe-results-count {
+  font-size: 16px;
+  font-weight: bold;
+  display: none;
+  margin-top: 2px;
+  color: rgb(134, 38, 21);
+  margin-right: 22px;
+}
+
+.saved-recipe-panel {
+  display: none;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.discover-saved {
+  margin-top: 140px !important;
+  margin-bottom: 40px;
+}
+
+.sign-in-saved {
+  margin-top: 55px !important;
+  margin-bottom: -100px;
+  display: none;
+}
+
+@media (max-width: 470px) {
   .saved-search-prompt {
-    margin-bottom: 50px;
+    font-size: 25px;
+    margin-bottom: 64px;
   }
-  
-  .saved-recipe-results-panel {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: auto;
-  }
-  
   .saved-recipe-results {
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-    margin-left: 19px;
-  }
-  
-  .saved-recipe-results-icon {
-    margin-right: 10px;
-  }
-  
-  .saved-recipe-results-count {
+    margin-left: 16px;
     font-size: 16px;
-    font-weight: bold;
-    display: none;
-    margin-top: 2px;
-    color: rgb(134, 38, 21);
-    margin-right: 22px;
   }
-  
-  .saved-recipe-panel {
-    display: none;
-    flex-direction: column;
-    margin-top: 50px;
+
+  .saved-recipe-results-count {
+    font-size: 13px;
+    margin-right: 16px;
   }
-  
+
   .discover-saved {
-    margin-top: 140px !important;
-    margin-bottom: 40px;
+    font-size: 16px !important;
   }
-  
-  @media (max-width: 470px) {
-    .saved-search-prompt {
-      font-size: 25px;
-      margin-bottom: 64px;
-    }
-    .saved-recipe-results {
-      margin-left: 16px;
-      font-size: 16px;
-    }
-  
-    .saved-recipe-results-count {
-      font-size: 13px;
-      margin-right: 16px;
-    }
-  
-    .discover-saved {
-      font-size: 16px !important;
-    }
+
+  .sign-in-saved {
+    font-size: 16px !important;
   }
-  
-  @media (max-width: 345px) {
-    .saved-recipe-results-panel {
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .saved-recipe-results {
-      margin-left: 0px;
-      margin-right: 4px;
-    }
-  
-    .saved-recipe-results-count {
-      margin-right: 0px;
-    }
+}
+
+@media (max-width: 345px) {
+  .saved-recipe-results-panel {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
-  
+
+  .saved-recipe-results {
+    margin-left: 0px;
+    margin-right: 4px;
+  }
+
+  .saved-recipe-results-count {
+    margin-right: 0px;
+  }
+}

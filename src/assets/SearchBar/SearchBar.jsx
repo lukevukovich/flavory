@@ -102,8 +102,10 @@ export default function SearchBar({
     const searchString = searchParams.get("search");
     if (searchString !== null) {
       setSearch(searchString);
-      setPreviousSearch(searchString);
-      searchRecipes(searchString);
+      if (window.location.pathname === "/") {
+        setPreviousSearch(searchString);
+        searchRecipes(searchString);
+      }
     } else {
       let prompt;
       if (page) {

@@ -1,12 +1,26 @@
 import "./RecipePane.css";
 import RecipeTile from "../RecipeTile/RecipeTile";
 
-export default function RecipePane({ recipeList }) {
+export default function RecipePane({
+  recipeList,
+  setRecipeList,
+  savedRecipeList,
+  setSavedRecipeList,
+  setSearchCount,
+}) {
   return (
     <div className="recipe-pane">
       <div className="recipe-pane-container">
         {recipeList.map((recipe, index) => (
-          <RecipeTile key={index} recipe={recipe} />
+          <RecipeTile
+            key={index}
+            recipe={recipe}
+            recipeList={recipeList}
+            setRecipeList={setRecipeList}
+            savedRecipeList={savedRecipeList}
+            setSavedRecipeList={setSavedRecipeList}
+            setSearchCount={setSearchCount}
+          />
         ))}
       </div>
     </div>

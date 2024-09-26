@@ -91,6 +91,9 @@ export default function Home() {
             setMoreResultsLink={setMoreResultsLink}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
+            savedRecipeList={null}
+            setSavedRecipeList={null}
+            setSearchCount={null}
           ></RecipeResults>
         </div>
         <button

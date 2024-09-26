@@ -7,7 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import { saveRecipe } from "../../utils/RecipeAPI";
 import { checkSignInStatus } from "../../utils/Auth";
 
-export default function RecipeTile({ recipe }) {
+export default function RecipeTile({
+  recipe,
+  recipeList,
+  setRecipeList,
+  savedRecipeList,
+  setSavedRecipeList,
+  setSearchCount,
+}) {
   // State for saved recipes
   const [saved, setSaved] = useState(false);
   const [saveIcon, setSaveIcon] = useState(faBookmark);
@@ -37,15 +44,45 @@ export default function RecipeTile({ recipe }) {
   async function handleRecipeSave() {
     const prev = saved;
     try {
-      // Save the recipe
+      // Disable save button while saving
       saveButton.current.disabled = true;
       setSaved(!saved);
+
+      // Remove unsaved recipe from saved list
+      if (savedRecipeList) {
+        // If un-saving a recipe
+        if (prev === true && !saved === false) {
+          const newRecipeList = recipeList.filter(
+            (r) => r.recipe.url !== recipe.recipe.url
+          );
+          setRecipeList(newRecipeList);
+
+          const newSavedRecipeList = savedRecipeList.filter(
+            (r) => r.recipe.url !== recipe.recipe.url
+          );
+          setSavedRecipeList(newSavedRecipeList);
+
+          if (newRecipeList.length > 0) {
+            setSearchCount(newRecipeList.length + " recipes");
+          } else {
+            setRecipeList(newSavedRecipeList);
+            setSearchCount(newSavedRecipeList.length + " recipes");
+          }
+
+          setSaved(true);
+          saveButton.current.disabled = false;
+        }
+      }
+
+      // Save the recipe
       await saveRecipe(recipe);
-      saveButton.current.disabled = false;
     } catch (error) {
       setSaved(prev);
-      saveButton.current.disabled = false;
     }
+
+    try {
+      saveButton.current.disabled = false;
+    } catch (error) {}
   }
 
   // Set save icon based on saved state

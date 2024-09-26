@@ -29,6 +29,9 @@ export default function Header({ setRecipeList }) {
   // State for sign in button text
   const [signInText, setSignInText] = useState("sign in");
 
+  // State for page text
+  const [pageText, setPageText] = useState("home");
+
   // Check if user is signed in and set email
   async function setEmailOnSignIn() {
     const { isSignedIn, user } = await checkSignInStatus();
@@ -51,6 +54,7 @@ export default function Header({ setRecipeList }) {
   // Check if user is signed in on load
   useEffect(() => {
     setEmailOnSignIn();
+    setPageText(window.location.pathname.slice(1) || "home");
   }, []);
 
   // Detect click outside of menu panel
@@ -99,6 +103,7 @@ export default function Header({ setRecipeList }) {
         </button>
       </div>
       <div className="right">
+        <span className="page-text">{pageText}</span>
         <button
           className="button"
           ref={menuButton}
@@ -134,6 +139,7 @@ export default function Header({ setRecipeList }) {
               if (isSignedIn) {
                 const success = await signOut();
                 if (success) {
+                  setExpanded(false);
                   setEmailOnSignIn();
                   navigate("/");
                 }

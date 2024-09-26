@@ -14,6 +14,9 @@ export default function RecipeResults({
   setMoreResultsLink,
   isLoading,
   setIsLoading,
+  savedRecipeList,
+  setSavedRecipeList,
+  setSearchCount,
 }) {
   // Refs
   const loadMoreButton = useRef(null);
@@ -68,7 +71,13 @@ export default function RecipeResults({
 
   return (
     <div className="recipe-pane">
-      <RecipePane recipeList={recipeList}></RecipePane>
+      <RecipePane
+        recipeList={recipeList}
+        setRecipeList={setRecipeList}
+        savedRecipeList={savedRecipeList}
+        setSavedRecipeList={setSavedRecipeList}
+        setSearchCount={setSearchCount}
+      ></RecipePane>
       <button
         className="load-more-button button"
         ref={loadMoreButton}

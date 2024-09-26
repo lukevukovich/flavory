@@ -5,12 +5,18 @@ import Footer from "../../assets/Footer/Footer";
 import SearchBar from "../../assets/SearchBar/SearchBar";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { faBookmark, faCompass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookmark,
+  faCompass,
+  faHome,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
 import { getSavedRecipes } from "../../utils/RecipeAPI";
 import { checkSignInStatus } from "../../utils/Auth";
 import { searchSavedRecipes } from "../../utils/Search";
+import { signIn } from "../../utils/Auth";
 
 export default function Saved() {
   const navigate = useNavigate();
@@ -24,19 +30,25 @@ export default function Saved() {
   const recipePane = useRef(null);
   const searchBar = useRef(null);
   const discoverButton = useRef(null);
+  const signInButton = useRef(null);
+  const homeButton = useRef(null);
   const searchCountText = useRef(null);
 
   // States for recipe list and searching
+  const [signedIn, setSignedIn] = useState(false);
   const [recipeList, setRecipeList] = useState([]);
   const [moreResultsLink, setMoreResultsLink] = useState(null);
   const [searchCount, setSearchCount] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Load saved recipes
-  async function loadSavedRecipes() {
-    const { isSignedIn, user } = await checkSignInStatus();
+  async function loadSavedRecipes(isSignedIn) {
     if (!isSignedIn) {
       setHeadingText("sign in to view your saved recipes!");
+      searchBar.current.style.display = "none";
+      signInButton.current.style.display = "flex";
+      discoverButton.current.style.marginBottom = "122px";
+      recipePane.current.style.display = "none";
       return;
     }
 
@@ -51,16 +63,14 @@ export default function Saved() {
   }
 
   // Update saved recipes
-  async function updateSavedRecipes() {
-    const newSavedRecipes = await loadSavedRecipes();
+  async function updateSavedRecipes(isSignedIn) {
+    const newSavedRecipes = await loadSavedRecipes(isSignedIn);
     setOriginalRecipeList(newSavedRecipes);
   }
 
   async function useEffectLoad() {
     const { isSignedIn, user } = await checkSignInStatus();
-    if (!isSignedIn) {
-      searchBar.current.style.display = "none";
-    }
+    setSignedIn(isSignedIn);
     const search = searchParams.get("search");
     if (search === null) {
       navigate("/saved");
@@ -68,7 +78,7 @@ export default function Saved() {
       setMoreResultsLink(null);
     }
 
-    updateSavedRecipes();
+    updateSavedRecipes(isSignedIn);
   }
 
   // Set random saying on load
@@ -79,14 +89,20 @@ export default function Saved() {
   // Set states for recipe list
   useEffect(() => {
     if (recipeList.length === 0) {
-      if (searchBar.current.style.display == "none") {
-        discoverButton.current.style.marginBottom = "122px";
+      searchBar.current.querySelector("input").disabled = true;
+      if (signedIn && isLoading === false) {
+        setHeadingText("no saved recipes yet. discover something new to try!");
       }
       recipePane.current.style.display = "none";
       discoverButton.current.style.display = "flex";
+      homeButton.current.style.display = "flex";
     } else {
+      searchBar.current.querySelector("input").disabled = false;
+      setHeadingText("a taste of your favorites!");
+      searchBar.current.style.display = "flex";
       recipePane.current.style.display = "flex";
       discoverButton.current.style.display = "none";
+      homeButton.current.style.display = "none";
     }
   }, [recipeList]);
 
@@ -129,8 +145,44 @@ export default function Saved() {
             setMoreResultsLink={setMoreResultsLink}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
+            savedRecipeList={originalRecipeList}
+            setSavedRecipeList={setOriginalRecipeList}
+            setSearchCount={setSearchCount}
           ></RecipeResults>
         </div>
+        <button
+          className="sign-in-saved button"
+          ref={homeButton}
+          onClick={async () => {
+            navigate("/");
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faHome}
+            className="discover-icon button-icon"
+          />
+          home
+        </button>
+        <button
+          className="sign-in-saved button"
+          ref={signInButton}
+          onClick={async () => {
+            const success = await signIn();
+            if (success) {
+              if (window.location.pathname === "/saved") {
+                window.location.reload();
+              } else {
+                navigate("/saved");
+              }
+            }
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faUser}
+            className="discover-icon button-icon"
+          />
+          sign in
+        </button>
         <button
           className="discover-saved button"
           ref={discoverButton}
