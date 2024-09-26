@@ -9,6 +9,7 @@ import "../../App.css";
 export default function SearchBar({
   page,
   getRecipes,
+  recipeList,
   setRecipeList,
   setMoreResultsLink,
   searchCount,
@@ -16,6 +17,8 @@ export default function SearchBar({
   searchCountText,
   isLoading,
   setIsLoading,
+  savedRecipeList,
+  searchBar,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -44,28 +47,42 @@ export default function SearchBar({
 
     setIsLoading(true);
 
-    const result = await getRecipes(searchString);
+    let newRecipeList = [];
+    const result = await getRecipes(recipeList, searchString);
     if (result.hits.length > 0) {
       setRecipeList(result.hits);
-      inputBar.current.placeholder = "search for recipes";
+      newRecipeList = result.hits;
+      inputBar.current.placeholder = `search for ${
+        page ? page + " " : ""
+      }recipes`;
       try {
         setMoreResultsLink(result._links.next.href);
       } catch (error) {
         setMoreResultsLink(null);
       }
     } else {
-      setRecipeList([]);
+      const setList = savedRecipeList || [];
+      setRecipeList(setList);
+      newRecipeList = setList;
       setMoreResultsLink(null);
-      inputBar.current.placeholder = "no recipes found, try again";
+      let prompt;
+      if (page === "") {
+        prompt = page;
+      } else {
+        prompt = page + " ";
+      }
+      inputBar.current.placeholder = `no ${prompt}recipes found, try again`;
       setSearch("");
     }
     setPreviousSearch(searchString);
 
-    if (result.count > 0) {
-      setSearchCount(formatNumber(result.count) + " recipes");
-    } else {
-      setSearchCount(null);
+    let searchCount;
+    try {
+      searchCount = formatNumber(result.count) + " recipes";
+    } catch (error) {
+      searchCount = formatNumber(newRecipeList.length) + " recipes";
     }
+    setSearchCount(searchCount);
 
     setIsLoading(false);
   }
@@ -118,7 +135,7 @@ export default function SearchBar({
   }, [searchCount]);
 
   return (
-    <div className="search-bar">
+    <div className="search-bar" ref={searchBar}>
       <button
         className="button search-bar-search-button"
         ref={searchButton}
@@ -136,16 +153,24 @@ export default function SearchBar({
           type="text"
           className="search-bar-input"
           ref={inputBar}
-          placeholder="search for recipes"
+          placeholder={`search for ${page ? page + " " : ""}recipes`}
           value={search}
           onChange={(e) => {
             setPreviousSearch(search);
             setSearch(e.target.value.toLowerCase());
-            const goToEmpty = "/" + (page || "");
-            const goToSearch = "/" + (page || "\r");
             if (e.target.value === "") {
-              navigate(goToEmpty);
+              setRecipeList(savedRecipeList || []);
+              const newRecipeList = savedRecipeList || [];
+              setSearchCount(newRecipeList.length + " recipes");
+              setMoreResultsLink(null);
+              navigate("/" + page);
             } else {
+              let goToSearch;
+              if (page === "") {
+                goToSearch = page;
+              } else {
+                goToSearch = "/" + page;
+              }
               navigate(goToSearch + "?search=" + e.target.value.toLowerCase());
             }
           }}
@@ -162,9 +187,11 @@ export default function SearchBar({
           onClick={() => {
             setSearch("");
             setPreviousSearch("");
-            setRecipeList([]);
+            setRecipeList(savedRecipeList || []);
+            const newRecipeList = savedRecipeList || [];
+            setSearchCount(newRecipeList.length + " recipes");
             setMoreResultsLink(null);
-            navigate("/");
+            navigate("/" + page);
           }}
         >
           <FontAwesomeIcon icon={faXmark} />

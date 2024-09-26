@@ -8,16 +8,21 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { faBookmark, faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
-import { getRecipes } from "../../utils/RecipeAPI";
 import { getSavedRecipes } from "../../utils/RecipeAPI";
 import { checkSignInStatus } from "../../utils/Auth";
+import { searchSavedRecipes } from "../../utils/Search";
 
 export default function Saved() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  // States for saved recipes load
+  const [originalRecipeList, setOriginalRecipeList] = useState([]);
+  const [headingText, setHeadingText] = useState("a taste of your favorites!");
+
   // Refs
   const recipePane = useRef(null);
+  const searchBar = useRef(null);
   const discoverButton = useRef(null);
   const searchCountText = useRef(null);
 
@@ -29,8 +34,9 @@ export default function Saved() {
 
   // Load saved recipes
   async function loadSavedRecipes() {
-    const {isSignedIn, user} = await checkSignInStatus();
+    const { isSignedIn, user } = await checkSignInStatus();
     if (!isSignedIn) {
+      setHeadingText("sign in to view your saved recipes!");
       return;
     }
 
@@ -41,10 +47,20 @@ export default function Saved() {
       setSearchCount(savedRecipes.recipes.length + " recipes");
     }
     setIsLoading(false);
+    return savedRecipes.recipes;
   }
 
-  // Set random saying on load
-  useEffect(() => {
+  // Update saved recipes
+  async function updateSavedRecipes() {
+    const newSavedRecipes = await loadSavedRecipes();
+    setOriginalRecipeList(newSavedRecipes);
+  }
+
+  async function useEffectLoad() {
+    const { isSignedIn, user } = await checkSignInStatus();
+    if (!isSignedIn) {
+      searchBar.current.style.display = "none";
+    }
     const search = searchParams.get("search");
     if (search === null) {
       navigate("/saved");
@@ -52,12 +68,20 @@ export default function Saved() {
       setMoreResultsLink(null);
     }
 
-    loadSavedRecipes();
+    updateSavedRecipes();
+  }
+
+  // Set random saying on load
+  useEffect(() => {
+    useEffectLoad();
   }, []);
 
   // Set states for recipe list
   useEffect(() => {
     if (recipeList.length === 0) {
+      if (searchBar.current.style.display == "none") {
+        discoverButton.current.style.marginBottom = "122px";
+      }
       recipePane.current.style.display = "none";
       discoverButton.current.style.display = "flex";
     } else {
@@ -70,12 +94,11 @@ export default function Saved() {
     <div>
       <Header setRecipeList={setRecipeList}></Header>
       <div className="saved-search-panel">
-        <span className="heading-text saved-search-prompt">
-          a taste of your favorites!
-        </span>
+        <span className="heading-text saved-search-prompt">{headingText}</span>
         <SearchBar
           page={"saved"}
-          getRecipes={getRecipes}
+          getRecipes={searchSavedRecipes}
+          recipeList={recipeList}
           setRecipeList={setRecipeList}
           setMoreResultsLink={setMoreResultsLink}
           searchCount={searchCount}
@@ -83,6 +106,8 @@ export default function Saved() {
           searchCountText={searchCountText}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          savedRecipeList={originalRecipeList}
+          searchBar={searchBar}
         ></SearchBar>
         <div className="saved-recipe-panel" ref={recipePane}>
           <div className="saved-recipe-results-panel">

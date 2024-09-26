@@ -6,7 +6,7 @@ const GET_NEXT_RECIPES_API = "https://getnextrecipes-v4rowkce3a-uc.a.run.app";
 const GET_RECIPE_BY_ID_API = "https://getrecipebyid-v4rowkce3a-uc.a.run.app";
 
 // Query recipes from the Edamam API and Firebase cloud function
-export async function getRecipes(query) {
+export async function getRecipes(recipeList, query) {
   try {
     // Check if the user is signed in and get the user object if they are
     const { isSignedIn, user } = await checkSignInStatus();

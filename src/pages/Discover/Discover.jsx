@@ -79,7 +79,7 @@ export default function Discover() {
 
     for (let i = 0; i < NUMBER_OF_QUERIES; i++) {
       try {
-        const result = await getRecipes(randomQueries[i]);
+        const result = await getRecipes(null, randomQueries[i]);
         if (result.hits.length > 0) {
           const recipes = result.hits;
           const randomIndexes = getRandomIndexes(recipes);

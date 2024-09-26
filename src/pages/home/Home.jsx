@@ -59,7 +59,9 @@ export default function Home() {
       <div className="home-search-panel">
         <span className="heading-text home-search-prompt">{saying}</span>
         <SearchBar
+          page={""}
           getRecipes={getRecipes}
+          recipeList={recipeList}
           setRecipeList={setRecipeList}
           setMoreResultsLink={setMoreResultsLink}
           searchCount={searchCount}
@@ -67,6 +69,7 @@ export default function Home() {
           searchCountText={searchCountText}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          SavedRecipeList={null}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
           <div className="home-recipe-results-panel">
