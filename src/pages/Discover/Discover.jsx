@@ -107,9 +107,7 @@ export default function Discover() {
           allRandomRecipes[i] = randomRecipes;
         }
       }
-    } catch (error) {
-      pass;
-    }
+    } catch (error) {}
 
     if (allRandomRecipes.length === 0) {
       setDiscoverText("unable to fetch recipes, refresh to try again!");

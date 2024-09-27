@@ -139,18 +139,6 @@ export default function SearchBar({
 
   return (
     <div className="search-bar" ref={searchBar}>
-      <button
-        className="button search-bar-search-button"
-        ref={searchButton}
-        onClick={() => {
-          searchRecipes();
-        }}
-      >
-        <FontAwesomeIcon
-          icon={searchIcon}
-          className={`${isLoading ? "loading-icon" : ""}`}
-        ></FontAwesomeIcon>
-      </button>
       <div className="search-bar-panel">
         <input
           type="text"
@@ -200,6 +188,18 @@ export default function SearchBar({
           <FontAwesomeIcon icon={faXmark} />
         </button>
       </div>
+      <button
+        className="button search-bar-search-button"
+        ref={searchButton}
+        onClick={() => {
+          searchRecipes();
+        }}
+      >
+        <FontAwesomeIcon
+          icon={searchIcon}
+          className={`${isLoading ? "loading-icon" : ""}`}
+        ></FontAwesomeIcon>
+      </button>
     </div>
   );
 }
