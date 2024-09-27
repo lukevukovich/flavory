@@ -1,6 +1,7 @@
 import "./RecipePane.css";
 import RecipeTile from "../RecipeTile/RecipeTile";
 
+// Recipe pane component
 export default function RecipePane({
   recipeList,
   setRecipeList,

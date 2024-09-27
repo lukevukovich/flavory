@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { formatNumber } from "../../utils/Number";
 import "../../App.css";
 
+// Search bar component
 export default function SearchBar({
   page,
   getRecipes,

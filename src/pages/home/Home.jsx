@@ -6,11 +6,18 @@ import SearchBar from "../../assets/SearchBar/SearchBar";
 import { useState, useEffect, useRef } from "react";
 import { sayings } from "../../utils/Sayings";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { faCompass, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookmark,
+  faCompass,
+  faSearch,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
 import { getRecipes } from "../../utils/RecipeAPI";
+import { checkSignInStatus, signIn } from "../../utils/Auth";
 
+// Home page
 export default function Home() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -18,6 +25,8 @@ export default function Home() {
   // Refs
   const recipePane = useRef(null);
   const discoverButton = useRef(null);
+  const savedButton = useRef(null);
+  const signInButton = useRef(null);
   const searchCountText = useRef(null);
 
   // State for random saying
@@ -29,8 +38,24 @@ export default function Home() {
   const [searchCount, setSearchCount] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // State for sign in
+  const [signedIn, setSignedIn] = useState(false);
+
+  // Handle sign in on load
+  async function handleSignIn() {
+    const { isSignedIn, user } = await checkSignInStatus();
+    if (isSignedIn) {
+      signInButton.current.style.display = "none";
+      savedButton.current.style.display = "flex";
+    }
+
+    setSignedIn(isSignedIn);
+  }
+
   // Set random saying on load
   useEffect(() => {
+    handleSignIn();
+
     const search = searchParams.get("search");
     if (search === null) {
       navigate("/");
@@ -42,14 +67,23 @@ export default function Home() {
     setSaying(sayings[randomIndex]);
   }, []);
 
-  // Set states for recipe list
+  // Set states for recipe list, add/remove buttons
   useEffect(() => {
     if (recipeList.length === 0) {
       recipePane.current.style.display = "none";
       discoverButton.current.style.display = "flex";
+      if (signedIn) {
+        savedButton.current.style.display = "flex";
+        signInButton.current.style.display = "none";
+      } else {
+        signInButton.current.style.display = "flex";
+        savedButton.current.style.display = "none";
+      }
     } else {
       recipePane.current.style.display = "flex";
       discoverButton.current.style.display = "none";
+      savedButton.current.style.display = "none";
+      signInButton.current.style.display = "none";
     }
   }, [recipeList]);
 
@@ -96,6 +130,35 @@ export default function Home() {
             setSearchCount={null}
           ></RecipeResults>
         </div>
+        <button
+          className="sign-in-home button"
+          ref={signInButton}
+          onClick={async () => {
+            const success = await signIn();
+            if (success) {
+              window.location.reload();
+            }
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faUser}
+            className="discover-icon button-icon"
+          />
+          sign in
+        </button>
+        <button
+          className="saved-home button"
+          ref={savedButton}
+          onClick={() => {
+            navigate("/saved");
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faBookmark}
+            className="discover-icon button-icon"
+          />
+          saved recipes
+        </button>
         <button
           className="discover-home button"
           ref={discoverButton}

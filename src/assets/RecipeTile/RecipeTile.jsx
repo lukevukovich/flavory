@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { saveRecipe } from "../../utils/RecipeAPI";
 import { checkSignInStatus } from "../../utils/Auth";
 
+// Single recipe tile component
 export default function RecipeTile({
   recipe,
   recipeList,
@@ -48,9 +49,9 @@ export default function RecipeTile({
       saveButton.current.disabled = true;
       setSaved(!saved);
 
-      // Remove unsaved recipe from saved list
+      // If un-saving a recipe
       if (savedRecipeList) {
-        // If un-saving a recipe
+        // Un-save the recipe
         if (prev === true && !saved === false) {
           const newRecipeList = recipeList.filter(
             (r) => r.recipe.url !== recipe.recipe.url

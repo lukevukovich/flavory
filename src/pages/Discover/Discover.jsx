@@ -10,6 +10,7 @@ import RecipePane from "../../assets/RecipePane/RecipePane";
 import { faRotateRight, faLemon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+// Discover page
 export default function Discover() {
   // Controllers for random recipes
   const NUMBER_OF_QUERIES = 4;
@@ -34,7 +35,7 @@ export default function Discover() {
   // Generate random queries from recipe data with unique random types
   function generateRandomQueries() {
     let randomQueries = [];
-    let randomTypes = new Set(); // To keep track of unique random types
+    let randomTypes = new Set();
 
     while (randomTypes.size < Math.min(NUMBER_OF_QUERIES, recipeTypes.length)) {
       let randomType =
@@ -47,7 +48,7 @@ export default function Discover() {
             Math.floor(Math.random() * recipeDescriptors.length)
           ];
         randomQueries.push(randomDescriptor + " " + randomType);
-        randomTypes.add(randomType.toLowerCase()); // Add to set to avoid duplicates
+        randomTypes.add(randomType.toLowerCase());
       }
     }
 

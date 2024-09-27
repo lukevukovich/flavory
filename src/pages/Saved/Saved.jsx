@@ -18,6 +18,7 @@ import { checkSignInStatus } from "../../utils/Auth";
 import { searchSavedRecipes } from "../../utils/Search";
 import { signIn } from "../../utils/Auth";
 
+// Saved recipes page
 export default function Saved() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -81,7 +82,7 @@ export default function Saved() {
     updateSavedRecipes(isSignedIn);
   }
 
-  // Set random saying on load
+  // Handle all load operations
   useEffect(() => {
     useEffectLoad();
   }, []);
@@ -169,11 +170,7 @@ export default function Saved() {
           onClick={async () => {
             const success = await signIn();
             if (success) {
-              if (window.location.pathname === "/saved") {
-                window.location.reload();
-              } else {
-                navigate("/saved");
-              }
+              window.location.reload();
             }
           }}
         >

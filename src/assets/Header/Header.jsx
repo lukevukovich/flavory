@@ -14,6 +14,7 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn, signOut, checkSignInStatus } from "../../utils/Auth";
 
+// Dynamic header component
 export default function Header({ setRecipeList }) {
   const navigate = useNavigate();
 
@@ -26,7 +27,8 @@ export default function Header({ setRecipeList }) {
   const menuEmail = useRef(null);
   const menuEmailBox = useRef(null);
 
-  // State for sign in button text
+  // States for sign in
+  const [signedIn, setSignedIn] = useState(false);
   const [signInText, setSignInText] = useState("sign in");
 
   // State for page text
@@ -49,6 +51,7 @@ export default function Header({ setRecipeList }) {
       menuPanel.current.classList.remove("signed-in");
       menuPanel.current.style.height = "130px";
     }
+    setSignedIn(isSignedIn);
   }
 
   // Check if user is signed in on load
@@ -135,23 +138,19 @@ export default function Header({ setRecipeList }) {
           <button
             className="menu-button"
             onClick={async () => {
-              const { isSignedIn, user } = await checkSignInStatus();
-              if (isSignedIn) {
+              if (signedIn) {
                 const success = await signOut();
                 if (success) {
                   setExpanded(false);
                   setEmailOnSignIn();
-                  navigate("/");
+                  window.location.reload();
                 }
               } else {
                 const success = await signIn();
                 if (success) {
+                  setExpanded(false);
                   setEmailOnSignIn();
-                  if (window.location.pathname === "/saved") {
-                    window.location.reload();
-                  } else {
-                    navigate("/saved");
-                  }
+                  window.location.reload();
                 }
               }
             }}

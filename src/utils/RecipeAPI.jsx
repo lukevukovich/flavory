@@ -18,13 +18,13 @@ export async function getRecipes(recipeList, query) {
 
     // If the user is signed in, add the user-id to the headers
     if (isSignedIn && user) {
-      headers["user-id"] = user.uid; // Assuming `user.uid` contains the Firebase user ID
+      headers["user-id"] = user.uid;
     }
 
     // Make the request to the API
     const response = await fetch(`${GET_RECIPES_API}?q=${query}`, {
       method: "GET",
-      headers: headers, // Use the headers object with or without the user-id
+      headers: headers,
     });
 
     // Check if the response is OK

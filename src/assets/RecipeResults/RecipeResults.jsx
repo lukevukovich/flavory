@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import "../SearchBar/SearchBar.css";
 import { faLemon, faPlus } from "@fortawesome/free-solid-svg-icons";
 
+// Recipe results component
 export default function RecipeResults({
   recipeList,
   setRecipeList,
