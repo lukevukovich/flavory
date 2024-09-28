@@ -90,9 +90,12 @@ export default function SearchBar({
 
     let searchCount;
     try {
-      searchCount = formatNumber(result.count) + " recipes";
+      searchCount = formatNumber(result.count) + " recipe";
     } catch (error) {
-      searchCount = formatNumber(newRecipeList.length) + " recipes";
+      searchCount = formatNumber(newRecipeList.length) + " recipe";
+    }
+    if (newRecipeList.length > 1) {
+      searchCount += "s";
     }
     setSearchCount(searchCount);
 
@@ -163,7 +166,11 @@ export default function SearchBar({
             if (e.target.value === "") {
               setRecipeList(savedRecipeList || []);
               const newRecipeList = savedRecipeList || [];
-              setSearchCount(newRecipeList.length + " recipes");
+              if (newRecipeList.length === 1) {
+                setSearchCount(newRecipeList.length + " recipe");
+              } else {
+                setSearchCount(newRecipeList.length + " recipes");
+              }
               if (savedRecipeStates) {
                 savedRecipeStates[1](faBookmark);
                 savedRecipeStates[3]("saved recipes");
@@ -195,7 +202,13 @@ export default function SearchBar({
             setPreviousSearch("");
             setRecipeList(savedRecipeList || []);
             const newRecipeList = savedRecipeList || [];
-            setSearchCount(newRecipeList.length + " recipes");
+            if (newRecipeList.length > 0) {
+              if (newRecipeList.length === 1) {
+                setSearchCount(newRecipeList.length + " recipe");
+              } else {
+                setSearchCount(newRecipeList.length + " recipes");
+              }
+            }
             if (savedRecipeStates) {
               savedRecipeStates[1](faBookmark);
               savedRecipeStates[3]("saved recipes");

@@ -66,7 +66,11 @@ export default function Saved() {
     const savedRecipes = await getSavedRecipes();
     setRecipeList(savedRecipes.recipes);
     if (savedRecipes.recipes.length > 0) {
-      setSearchCount(savedRecipes.recipes.length + " recipes");
+      if (savedRecipes.recipes.length === 1) {
+        setSearchCount("1 recipe");
+      } else {
+        setSearchCount(savedRecipes.recipes.length + " recipes");
+      }
     }
     setIsLoading(false);
     return savedRecipes.recipes;
