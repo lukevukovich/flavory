@@ -43,10 +43,13 @@ export default function Home() {
 
   // Handle sign in on load
   async function handleSignIn() {
+    signInButton.current.disabled = true;
     const { isSignedIn, user } = await checkSignInStatus();
     if (isSignedIn) {
       signInButton.current.style.display = "none";
       savedButton.current.style.display = "flex";
+    } else {
+      signInButton.current.disabled = false;
     }
 
     setSignedIn(isSignedIn);
@@ -103,7 +106,9 @@ export default function Home() {
           searchCountText={searchCountText}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          SavedRecipeList={null}
+          savedRecipeList={null}
+          searchBar={null}
+          savedRecipeStates={null}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
           <div className="home-recipe-results-panel">

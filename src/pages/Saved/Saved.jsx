@@ -41,12 +41,21 @@ export default function Saved() {
   const [moreResultsLink, setMoreResultsLink] = useState(null);
   const [searchCount, setSearchCount] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [savedRecipeIcon, setSavedRecipeIcon] = useState(faBookmark);
+  const [savedRecipeText, setSavedRecipeText] = useState("saved recipes");
+  const savedRecipeStates = [
+    savedRecipeIcon,
+    setSavedRecipeIcon,
+    savedRecipeText,
+    setSavedRecipeText,
+  ];
 
   // Load saved recipes
   async function loadSavedRecipes(isSignedIn) {
     if (!isSignedIn) {
       setHeadingText("sign in to view your saved recipes!");
       searchBar.current.style.display = "none";
+      homeButton.current.style.display = "none";
       signInButton.current.style.display = "flex";
       discoverButton.current.style.marginBottom = "122px";
       recipePane.current.style.display = "none";
@@ -66,6 +75,9 @@ export default function Saved() {
   // Update saved recipes
   async function updateSavedRecipes(isSignedIn) {
     const newSavedRecipes = await loadSavedRecipes(isSignedIn);
+    newSavedRecipes.sort((a, b) =>
+      a.recipe.label.localeCompare(b.recipe.label)
+    );
     setOriginalRecipeList(newSavedRecipes);
   }
 
@@ -91,12 +103,16 @@ export default function Saved() {
   useEffect(() => {
     if (recipeList.length === 0) {
       searchBar.current.querySelector("input").disabled = true;
-      if (signedIn && isLoading === false) {
-        setHeadingText("no saved recipes yet. discover something new to try!");
+      if (signedIn) {
+        homeButton.current.style.display = "flex";
+        if (isLoading === false) {
+          setHeadingText(
+            "no saved recipes yet. discover something new to try!"
+          );
+        }
       }
       recipePane.current.style.display = "none";
       discoverButton.current.style.display = "flex";
-      homeButton.current.style.display = "flex";
     } else {
       searchBar.current.querySelector("input").disabled = false;
       setHeadingText("a taste of your favorites!");
@@ -104,6 +120,7 @@ export default function Saved() {
       recipePane.current.style.display = "flex";
       discoverButton.current.style.display = "none";
       homeButton.current.style.display = "none";
+      signInButton.current.style.display = "none";
     }
   }, [recipeList]);
 
@@ -125,15 +142,16 @@ export default function Saved() {
           setIsLoading={setIsLoading}
           savedRecipeList={originalRecipeList}
           searchBar={searchBar}
+          savedRecipeStates={savedRecipeStates}
         ></SearchBar>
         <div className="saved-recipe-panel" ref={recipePane}>
           <div className="saved-recipe-results-panel">
             <span className="saved-recipe-results">
               <FontAwesomeIcon
-                icon={faBookmark}
+                icon={savedRecipeStates[0]}
                 className="saved-recipe-results-icon"
               ></FontAwesomeIcon>
-              saved recipes
+              {savedRecipeStates[2]}
             </span>
             <span className="saved-recipe-results-count" ref={searchCountText}>
               {searchCount}

@@ -8,7 +8,6 @@ export function searchSavedRecipes(recipeList, query) {
     newRecipeList = { hits: newRecipeList };
     return newRecipeList;
   } catch (error) {
-    console.error(`Error searching saved recipes: ${error.message}`);
     return { hits: [] };
   }
 }

@@ -1,6 +1,12 @@
 import "./SearchBar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faXmark, faLemon } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faXmark,
+  faLemon,
+  faBookmark,
+  faBook,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { formatNumber } from "../../utils/Number";
@@ -20,6 +26,7 @@ export default function SearchBar({
   setIsLoading,
   savedRecipeList,
   searchBar,
+  savedRecipeStates,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -51,8 +58,12 @@ export default function SearchBar({
     let newRecipeList = [];
     const result = await getRecipes(recipeList, searchString);
     if (result.hits.length > 0) {
-      setRecipeList(result.hits);
       newRecipeList = result.hits;
+      setRecipeList(newRecipeList);
+      if (savedRecipeStates) {
+        savedRecipeStates[1](faSearch);
+        savedRecipeStates[3]("search results");
+      }
       inputBar.current.placeholder = `search for ${
         page ? page + " " : ""
       }recipes`;
@@ -153,6 +164,10 @@ export default function SearchBar({
               setRecipeList(savedRecipeList || []);
               const newRecipeList = savedRecipeList || [];
               setSearchCount(newRecipeList.length + " recipes");
+              if (savedRecipeStates) {
+                savedRecipeStates[1](faBookmark);
+                savedRecipeStates[3]("saved recipes");
+              }
               setMoreResultsLink(null);
               navigate("/" + page);
             } else {
@@ -181,6 +196,10 @@ export default function SearchBar({
             setRecipeList(savedRecipeList || []);
             const newRecipeList = savedRecipeList || [];
             setSearchCount(newRecipeList.length + " recipes");
+            if (savedRecipeStates) {
+              savedRecipeStates[1](faBookmark);
+              savedRecipeStates[3]("saved recipes");
+            }
             setMoreResultsLink(null);
             navigate("/" + page);
           }}
