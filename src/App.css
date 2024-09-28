@@ -21,6 +21,11 @@ body {
   padding-right: 25px;
 }
 
+.heading-icon {
+  margin-right: 16px;
+  color: rgb(228, 228, 228);
+}
+
 @media (max-width: 470px) {
   .heading-text {
     font-size: 28px;

@@ -7,7 +7,7 @@ import { recipeTypes, recipeDescriptors } from "../../utils/RecipeData";
 import { useState } from "react";
 import { getRecipes } from "../../utils/RecipeAPI";
 import RecipePane from "../../assets/RecipePane/RecipePane";
-import { faRotateRight, faLemon } from "@fortawesome/free-solid-svg-icons";
+import { faRotateRight, faLemon, faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Discover page
@@ -26,9 +26,7 @@ export default function Discover() {
   const refreshButton = useRef(null);
   const discoverHeading = useRef(null);
   const [loadMoreText, setLoadMoreText] = useState("load more");
-  const [discoverText, setDiscoverText] = useState(
-    "discover fresh flavors and recipes!"
-  );
+  const [discoverText, setDiscoverText] = useState("discover new recipes!");
   const [isLoading, setIsLoading] = useState(false);
   const [refreshIcon, setRefreshIcon] = useState(faRotateRight);
 
@@ -113,7 +111,7 @@ export default function Discover() {
       setDiscoverText("unable to fetch recipes, refresh to try again!");
       discoverHeading.current.style.marginBottom = "320px";
     } else {
-      setDiscoverText("discover fresh flavors and recipes!");
+      setDiscoverText("discover new recipes!");
       discoverHeading.current.style.marginBottom = "40px";
     }
 
@@ -148,7 +146,7 @@ export default function Discover() {
       <div className="discover-panel">
         <div className="discover-heading" ref={discoverHeading}>
           <span className="heading-text discover-heading-text">
-            {discoverText}
+            <FontAwesomeIcon icon={faCompass} className="heading-icon"></FontAwesomeIcon>{discoverText}
           </span>
           <button
             className="button discover-refresh-button"

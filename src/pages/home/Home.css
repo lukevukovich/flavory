@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 90px;
+  margin-top: 175px;
   margin-bottom: 101px;
 }
 
@@ -64,7 +64,6 @@
 
 @media (max-width: 470px) {
   .home-search-prompt {
-    font-size: 25px;
     margin-bottom: 64px;
   }
   .home-recipe-results {

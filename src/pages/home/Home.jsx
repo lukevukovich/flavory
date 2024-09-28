@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   faBookmark,
   faCompass,
+  faHome,
   faSearch,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -23,11 +24,13 @@ export default function Home() {
   const [searchParams] = useSearchParams();
 
   // Refs
+  const searchBar = useRef(null);
   const recipePane = useRef(null);
   const discoverButton = useRef(null);
   const savedButton = useRef(null);
   const signInButton = useRef(null);
   const searchCountText = useRef(null);
+  const searchButton = useRef(null);
 
   // State for random saying
   const [saying, setSaying] = useState("");
@@ -107,8 +110,9 @@ export default function Home() {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           savedRecipeList={null}
-          searchBar={null}
+          searchBar={searchBar}
           savedRecipeStates={null}
+          searchButton={searchButton}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
           <div className="home-recipe-results-panel">

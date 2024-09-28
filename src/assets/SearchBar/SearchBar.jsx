@@ -27,6 +27,7 @@ export default function SearchBar({
   savedRecipeList,
   searchBar,
   savedRecipeStates,
+  searchButton,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -39,7 +40,6 @@ export default function SearchBar({
   // Refs
   const inputBar = useRef(null);
   const clearButton = useRef(null);
-  const searchButton = useRef(null);
 
   // Search for recipes
   async function searchRecipes(searchQuery) {
@@ -72,6 +72,7 @@ export default function SearchBar({
       } catch (error) {
         setMoreResultsLink(null);
       }
+      window.scrollTo(0, 0);
     } else {
       const setList = savedRecipeList || [];
       setRecipeList(setList);
@@ -112,8 +113,44 @@ export default function SearchBar({
     }
   }, [isLoading]);
 
+  // Handle scroll and resize events for search bar snapping
+  function handleScroll() {
+    const searchBarY = searchBar.current.getBoundingClientRect().top;
+    if (searchBarY <= 85) {
+      if (window.innerWidth <= 930) {
+        searchBar.current.classList.add("search-bar-scroll");
+      } else {
+        searchBar.current.classList.remove("search-bar-scroll");
+      }
+    } else {
+      searchBar.current.classList.remove("search-bar-scroll");
+    }
+  }
+
+  // Handle resize events for search bar resizing
+  function handleResize() {
+    const searchBarY = searchBar.current.getBoundingClientRect().top;
+    if (window.innerWidth <= 930) {
+      searchBar.current.classList.add("search-bar-resize");
+      if (searchBarY <= 85) {
+        searchBar.current.classList.add("search-bar-scroll");
+      } else {
+        searchBar.current.classList.remove("search-bar-scroll");
+      }
+    } else {
+      searchBar.current.classList.remove("search-bar-resize");
+      searchBar.current.classList.remove("search-bar-scroll");
+    }
+  }
+
   // Set search input on load
   useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    if (window.innerWidth <= 930) {
+      searchBar.current.classList.add("search-bar-resize");
+    }
+
     const searchString = searchParams.get("search");
     if (searchString !== null) {
       setSearch(searchString);
@@ -131,6 +168,11 @@ export default function SearchBar({
       inputBar.current.placeholder = `search for ${prompt}recipes`;
       setSearch("");
     }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Show clear button when search input is not empty
@@ -164,16 +206,18 @@ export default function SearchBar({
             setPreviousSearch(search);
             setSearch(e.target.value.toLowerCase());
             if (e.target.value === "") {
-              setRecipeList(savedRecipeList || []);
-              const newRecipeList = savedRecipeList || [];
-              if (newRecipeList.length === 1) {
-                setSearchCount(newRecipeList.length + " recipe");
-              } else {
-                setSearchCount(newRecipeList.length + " recipes");
-              }
-              if (savedRecipeStates) {
-                savedRecipeStates[1](faBookmark);
-                savedRecipeStates[3]("saved recipes");
+              if (savedRecipeList) {
+                setRecipeList(savedRecipeList || []);
+                const newRecipeList = savedRecipeList || [];
+                if (newRecipeList.length === 1) {
+                  setSearchCount(newRecipeList.length + " recipe");
+                } else {
+                  setSearchCount(newRecipeList.length + " recipes");
+                }
+                if (savedRecipeStates) {
+                  savedRecipeStates[1](faBookmark);
+                  savedRecipeStates[3]("saved recipes");
+                }
               }
               setMoreResultsLink(null);
               navigate("/" + page);
@@ -200,18 +244,20 @@ export default function SearchBar({
           onClick={() => {
             setSearch("");
             setPreviousSearch("");
-            setRecipeList(savedRecipeList || []);
-            const newRecipeList = savedRecipeList || [];
-            if (newRecipeList.length > 0) {
-              if (newRecipeList.length === 1) {
-                setSearchCount(newRecipeList.length + " recipe");
-              } else {
-                setSearchCount(newRecipeList.length + " recipes");
+            if (savedRecipeList) {
+              setRecipeList(savedRecipeList || []);
+              const newRecipeList = savedRecipeList || [];
+              if (newRecipeList.length > 0) {
+                if (newRecipeList.length === 1) {
+                  setSearchCount(newRecipeList.length + " recipe");
+                } else {
+                  setSearchCount(newRecipeList.length + " recipes");
+                }
               }
-            }
-            if (savedRecipeStates) {
-              savedRecipeStates[1](faBookmark);
-              savedRecipeStates[3]("saved recipes");
+              if (savedRecipeStates) {
+                savedRecipeStates[1](faBookmark);
+                savedRecipeStates[3]("saved recipes");
+              }
             }
             setMoreResultsLink(null);
             navigate("/" + page);

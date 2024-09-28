@@ -25,7 +25,7 @@ export default function Saved() {
 
   // States for saved recipes load
   const [originalRecipeList, setOriginalRecipeList] = useState([]);
-  const [headingText, setHeadingText] = useState("a taste of your favorites!");
+  const [headingText, setHeadingText] = useState("your saved recipes!");
 
   // Refs
   const recipePane = useRef(null);
@@ -34,6 +34,7 @@ export default function Saved() {
   const signInButton = useRef(null);
   const homeButton = useRef(null);
   const searchCountText = useRef(null);
+  const searchButton = useRef(null);
 
   // States for recipe list and searching
   const [signedIn, setSignedIn] = useState(false);
@@ -62,7 +63,6 @@ export default function Saved() {
       return;
     }
 
-    setIsLoading(true);
     const savedRecipes = await getSavedRecipes();
     setRecipeList(savedRecipes.recipes);
     if (savedRecipes.recipes.length > 0) {
@@ -72,17 +72,24 @@ export default function Saved() {
         setSearchCount(savedRecipes.recipes.length + " recipes");
       }
     }
-    setIsLoading(false);
+
     return savedRecipes.recipes;
   }
 
   // Update saved recipes
   async function updateSavedRecipes(isSignedIn) {
+    setIsLoading(true);
     const newSavedRecipes = await loadSavedRecipes(isSignedIn);
     newSavedRecipes.sort((a, b) =>
       a.recipe.label.localeCompare(b.recipe.label)
     );
     setOriginalRecipeList(newSavedRecipes);
+
+    // If search query on load, search for recipes
+    if (newSavedRecipes.length > 0 && searchParams.get("search") !== null) {
+      searchButton.current.click();
+    }
+    setIsLoading(false);
   }
 
   async function useEffectLoad() {
@@ -119,7 +126,7 @@ export default function Saved() {
       discoverButton.current.style.display = "flex";
     } else {
       searchBar.current.querySelector("input").disabled = false;
-      setHeadingText("a taste of your favorites!");
+      setHeadingText("your saved recipes!");
       searchBar.current.style.display = "flex";
       recipePane.current.style.display = "flex";
       discoverButton.current.style.display = "none";
@@ -132,7 +139,13 @@ export default function Saved() {
     <div>
       <Header setRecipeList={setRecipeList}></Header>
       <div className="saved-search-panel">
-        <span className="heading-text saved-search-prompt">{headingText}</span>
+        <span className="heading-text saved-search-prompt">
+          <FontAwesomeIcon
+            icon={faBookmark}
+            className="heading-icon"
+          ></FontAwesomeIcon>
+          {headingText}
+        </span>
         <SearchBar
           page={"saved"}
           getRecipes={searchSavedRecipes}
@@ -147,6 +160,7 @@ export default function Saved() {
           savedRecipeList={originalRecipeList}
           searchBar={searchBar}
           savedRecipeStates={savedRecipeStates}
+          searchButton={searchButton}
         ></SearchBar>
         <div className="saved-recipe-panel" ref={recipePane}>
           <div className="saved-recipe-results-panel">

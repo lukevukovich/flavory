@@ -4,10 +4,10 @@
   align-items: center;
   width: 100%;
   border-bottom: 1px solid rgb(235, 128, 79);
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 101;
   background-color: rgb(228, 82, 25);
 }
 
@@ -37,23 +37,24 @@
   transform: rotate(180deg);
 }
 
-.page-text {
+.page-icon {
   font-size: 20px;
   font-weight: 500;
   color: white;
 }
 
 @media (max-width: 470px) {
-  .page-text {
+  .page-icon {
     font-size: 18px;
   }
 }
 
 .menu-panel {
+  position: fixed;
+  z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease, top 0.2s ease; /* Adjust duration as needed */
-  position: absolute;
+  transition: opacity 0.2s ease, visibility 0.2s ease, top 0.2s ease;
   top: 65px;
   right: 22px;
   width: auto;

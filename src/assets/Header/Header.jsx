@@ -9,6 +9,7 @@ import {
   faBookmark,
   faCompass,
   faCircleCheck,
+  faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +33,7 @@ export default function Header({ setRecipeList }) {
   const [signInText, setSignInText] = useState("sign in");
 
   // State for page text
-  const [pageText, setPageText] = useState("home");
+  const [pageIcon, setPageIcon] = useState(faHome);
 
   // Check if user is signed in and set email
   async function setEmailOnSignIn() {
@@ -54,10 +55,26 @@ export default function Header({ setRecipeList }) {
     setSignedIn(isSignedIn);
   }
 
+  function setPageIconOnLoad() {
+    const path = window.location.pathname;
+    switch (path) {
+      case "/":
+        setPageIcon(faHome);
+        break;
+      case "/discover":
+        setPageIcon(faCompass);
+        break;
+      case "/saved":
+        setPageIcon(faBookmark);
+        break;
+    }
+  }
+
   // Check if user is signed in on load
   useEffect(() => {
+    window.scrollTo(0, 0);
     setEmailOnSignIn();
-    setPageText(window.location.pathname.slice(1) || "home");
+    setPageIconOnLoad();
   }, []);
 
   // Detect click outside of menu panel
@@ -82,112 +99,117 @@ export default function Header({ setRecipeList }) {
   }, [expanded]);
 
   return (
-    <div className="header">
-      <div className="left">
-        <button
-          className="button"
-          onClick={() => {
-            if (setRecipeList) {
-              setRecipeList([]);
-            }
-            const clearButton = document.querySelector(
-              ".search-bar-clear-button"
-            );
-            const inputBar = document.querySelector(".search-bar-input");
-            if (clearButton) {
-              clearButton.click();
-              inputBar.placeholder = "search for recipes";
-            }
-            navigate("/");
-          }}
-        >
-          <FontAwesomeIcon icon={faUtensils} className="button-icon" />
-          flavory
-        </button>
-      </div>
-      <div className="right">
-        <span className="page-text">{pageText}</span>
-        <button
-          className="button"
-          ref={menuButton}
-          onClick={() => {
-            if (expanded) {
-              setExpanded(false);
-            } else {
-              setExpanded(true);
-            }
-          }}
-        >
-          <FontAwesomeIcon icon={faBars} className="menu-icon" />
-          <FontAwesomeIcon
-            icon={faCaretDown}
-            className={`caret-down-icon  ${expanded ? "rotate" : ""}`}
-          />
-        </button>
-        <div
-          className={`menu-panel  ${expanded ? "visible" : "hidden"}`}
-          ref={menuPanel}
-        >
-          <div className="menu-email" ref={menuEmailBox}>
-            <FontAwesomeIcon
-              icon={faCircleCheck}
-              className="menu-email-icon"
-            ></FontAwesomeIcon>
-            <span className="menu-email-text" ref={menuEmail}></span>
-          </div>
+    <div className="header-all">
+      <div className="header">
+        <div className="left">
           <button
-            className="menu-button"
-            onClick={async () => {
-              if (signedIn) {
-                const success = await signOut();
-                if (success) {
-                  setExpanded(false);
-                  setEmailOnSignIn();
-                  window.location.reload();
-                }
+            className="button"
+            onClick={() => {
+              if (setRecipeList) {
+                setRecipeList([]);
+              }
+              const clearButton = document.querySelector(
+                ".search-bar-clear-button"
+              );
+              const inputBar = document.querySelector(".search-bar-input");
+              if (clearButton) {
+                clearButton.click();
+                inputBar.placeholder = "search for recipes";
+              }
+              navigate("/");
+            }}
+          >
+            <FontAwesomeIcon icon={faUtensils} className="button-icon" />
+            flavory
+          </button>
+        </div>
+        <div className="right">
+          <FontAwesomeIcon
+            icon={pageIcon}
+            className="page-icon"
+          ></FontAwesomeIcon>
+          <button
+            className="button"
+            ref={menuButton}
+            onClick={() => {
+              if (expanded) {
+                setExpanded(false);
               } else {
-                const success = await signIn();
-                if (success) {
-                  setExpanded(false);
-                  setEmailOnSignIn();
-                  window.location.reload();
-                }
+                setExpanded(true);
               }
             }}
           >
-            <div className="menu-sign-in">
-              <FontAwesomeIcon
-                icon={faUser}
-                className="menu-button-icon menu-button-icon-user"
-              ></FontAwesomeIcon>
-              <span className="menu-sign-in-text">{signInText}</span>
-            </div>
-          </button>
-          <button
-            className="menu-button"
-            onClick={() => {
-              navigate("/discover");
-            }}
-          >
+            <FontAwesomeIcon icon={faBars} className="menu-icon" />
             <FontAwesomeIcon
-              icon={faCompass}
-              className="menu-button-icon menu-button-icon-discover"
-            ></FontAwesomeIcon>
-            discover
-          </button>
-          <button
-            className="menu-button"
-            onClick={() => {
-              navigate("/saved");
-            }}
-          >
-            <FontAwesomeIcon
-              icon={faBookmark}
-              className="menu-button-icon menu-button-icon-bookmark"
-            ></FontAwesomeIcon>
-            saved
+              icon={faCaretDown}
+              className={`caret-down-icon  ${expanded ? "rotate" : ""}`}
+            />
           </button>
         </div>
+      </div>
+      <div
+        className={`menu-panel  ${expanded ? "visible" : "hidden"}`}
+        ref={menuPanel}
+      >
+        <div className="menu-email" ref={menuEmailBox}>
+          <FontAwesomeIcon
+            icon={faCircleCheck}
+            className="menu-email-icon"
+          ></FontAwesomeIcon>
+          <span className="menu-email-text" ref={menuEmail}></span>
+        </div>
+        <button
+          className="menu-button"
+          onClick={async () => {
+            if (signedIn) {
+              const success = await signOut();
+              if (success) {
+                setExpanded(false);
+                setEmailOnSignIn();
+                window.location.reload();
+              }
+            } else {
+              const success = await signIn();
+              if (success) {
+                setExpanded(false);
+                setEmailOnSignIn();
+                window.location.reload();
+              }
+            }
+          }}
+        >
+          <div className="menu-sign-in">
+            <FontAwesomeIcon
+              icon={faUser}
+              className="menu-button-icon menu-button-icon-user"
+            ></FontAwesomeIcon>
+            <span className="menu-sign-in-text">{signInText}</span>
+          </div>
+        </button>
+        <button
+          className="menu-button"
+          onClick={() => {
+            navigate("/discover");
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faCompass}
+            className="menu-button-icon menu-button-icon-discover"
+          ></FontAwesomeIcon>
+          discover
+        </button>
+        <button
+          className="menu-button"
+          onClick={() => {
+            navigate("/saved");
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faBookmark}
+            className="menu-button-icon menu-button-icon-bookmark"
+          ></FontAwesomeIcon>
+          saved
+        </button>
       </div>
     </div>
   );
