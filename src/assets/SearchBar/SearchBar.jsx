@@ -116,7 +116,7 @@ export default function SearchBar({
   // Handle scroll and resize events for search bar snapping
   function handleScroll() {
     const searchBarY = searchBar.current.getBoundingClientRect().top;
-    if (searchBarY <= 85) {
+    if (searchBarY <= 84) {
       if (window.innerWidth <= 930) {
         searchBar.current.classList.add("search-bar-scroll");
       } else {
@@ -132,7 +132,7 @@ export default function SearchBar({
     const searchBarY = searchBar.current.getBoundingClientRect().top;
     if (window.innerWidth <= 930) {
       searchBar.current.classList.add("search-bar-resize");
-      if (searchBarY <= 85) {
+      if (searchBarY <= 84) {
         searchBar.current.classList.add("search-bar-scroll");
       } else {
         searchBar.current.classList.remove("search-bar-scroll");
@@ -206,6 +206,7 @@ export default function SearchBar({
             setPreviousSearch(search);
             setSearch(e.target.value.toLowerCase());
             if (e.target.value === "") {
+              window.scrollTo(0, 0);
               if (savedRecipeList) {
                 setRecipeList(savedRecipeList || []);
                 const newRecipeList = savedRecipeList || [];
@@ -245,6 +246,7 @@ export default function SearchBar({
             setSearch("");
             setPreviousSearch("");
             if (savedRecipeList) {
+              window.scrollTo(0, 0);
               setRecipeList(savedRecipeList || []);
               const newRecipeList = savedRecipeList || [];
               if (newRecipeList.length > 0) {

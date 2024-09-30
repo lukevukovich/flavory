@@ -51,7 +51,7 @@
 
 .menu-panel {
   position: fixed;
-  z-index: 9999;
+  z-index: 10000;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease, top 0.2s ease;
