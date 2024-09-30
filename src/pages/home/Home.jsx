@@ -30,8 +30,6 @@ export default function Home() {
   const savedButton = useRef(null);
   const signInButton = useRef(null);
   const searchCountText = useRef(null);
-  const searchButton = useRef(null);
-  const clearButton = useRef(null);
 
   // State for random saying
   const [saying, setSaying] = useState("");
@@ -113,8 +111,6 @@ export default function Home() {
           savedRecipeList={null}
           searchBar={searchBar}
           savedRecipeStates={null}
-          searchButton={searchButton}
-          clearButton={clearButton}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
           <div className="home-recipe-results-panel">

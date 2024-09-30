@@ -26,8 +26,6 @@ export default function SearchBar({
   savedRecipeList,
   searchBar,
   savedRecipeStates,
-  searchButton,
-  clearButton,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -39,6 +37,8 @@ export default function SearchBar({
 
   // Refs
   const inputBar = useRef(null);
+  const searchButton = useRef(null);
+  const clearButton = useRef(null);
 
   // Search for recipes
   async function searchRecipes(searchQuery) {
@@ -55,11 +55,7 @@ export default function SearchBar({
     setIsLoading(true);
 
     let newRecipeList = [];
-    searchBar.current.querySelector("input").disabled = true;
-    clearButton.current.disabled = true;
     const result = await getRecipes(recipeList, searchString);
-    searchBar.current.querySelector("input").disabled = false;
-    clearButton.current.disabled = false;
     if (result.hits.length > 0) {
       newRecipeList = result.hits;
       setRecipeList(newRecipeList);
@@ -106,12 +102,32 @@ export default function SearchBar({
     setIsLoading(false);
   }
 
+  // Search for saved recipes on load
+  async function searchSavedRecipesOnLoad() {
+    if (savedRecipeList) {
+      if (recipeList.length > 0 && searchParams.get("search") !== null) {
+        setPreviousSearch("");
+        await searchRecipes(search);
+      }
+    }
+  }
+
+  // Handle search on load
+  useEffect(() => {
+    searchSavedRecipesOnLoad();
+  }, [recipeList]);
+
+  // Set search button to loading state
   useEffect(() => {
     if (isLoading) {
       searchButton.current.disabled = true;
+      clearButton.current.disabled = true;
+      searchBar.current.querySelector("input").disabled = true;
       setSearchIcon(faLemon);
     } else {
       searchButton.current.disabled = false;
+      clearButton.current.disabled = false;
+      searchBar.current.querySelector("input").disabled = false;
       setSearchIcon(faSearch);
     }
   }, [isLoading]);

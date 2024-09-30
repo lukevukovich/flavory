@@ -34,8 +34,6 @@ export default function Saved() {
   const signInButton = useRef(null);
   const homeButton = useRef(null);
   const searchCountText = useRef(null);
-  const searchButton = useRef(null);
-  const clearButton = useRef(null);
 
   // States for recipe list and searching
   const [signedIn, setSignedIn] = useState(false);
@@ -149,8 +147,6 @@ export default function Saved() {
           savedRecipeList={originalRecipeList}
           searchBar={searchBar}
           savedRecipeStates={savedRecipeStates}
-          searchButton={searchButton}
-          clearButton={clearButton}
         ></SearchBar>
         <div className="saved-recipe-panel" ref={recipePane}>
           <div className="saved-recipe-results-panel">
