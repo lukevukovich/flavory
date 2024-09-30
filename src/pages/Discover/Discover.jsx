@@ -26,7 +26,7 @@ export default function Discover() {
   const refreshButton = useRef(null);
   const discoverHeading = useRef(null);
   const [loadMoreText, setLoadMoreText] = useState("load more");
-  const [discoverText, setDiscoverText] = useState("discover new recipes!");
+  const [discoverText, setDiscoverText] = useState("discover new recipes");
   const [isLoading, setIsLoading] = useState(false);
   const [refreshIcon, setRefreshIcon] = useState(faRotateRight);
 
@@ -111,7 +111,7 @@ export default function Discover() {
       setDiscoverText("unable to fetch recipes, refresh to try again!");
       discoverHeading.current.style.marginBottom = "320px";
     } else {
-      setDiscoverText("discover new recipes!");
+      setDiscoverText("discover new recipes");
       discoverHeading.current.style.marginBottom = "40px";
     }
 

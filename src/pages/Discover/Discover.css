@@ -56,6 +56,10 @@
     font-size: 16px !important;
     margin-left: 12px;
   }
+
+  .recipe-pane-title {
+    font-size: 16px;
+  }
 }
 
 .refreshing-icon {

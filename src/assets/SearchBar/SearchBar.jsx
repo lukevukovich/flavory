@@ -5,7 +5,6 @@ import {
   faXmark,
   faLemon,
   faBookmark,
-  faBook,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -56,7 +55,11 @@ export default function SearchBar({
     setIsLoading(true);
 
     let newRecipeList = [];
+    searchBar.current.querySelector("input").disabled = true;
+    clearButton.current.disabled = true;
     const result = await getRecipes(recipeList, searchString);
+    searchBar.current.querySelector("input").disabled = false;
+    clearButton.current.disabled = false;
     if (result.hits.length > 0) {
       newRecipeList = result.hits;
       setRecipeList(newRecipeList);

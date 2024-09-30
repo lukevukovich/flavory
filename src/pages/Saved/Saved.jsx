@@ -25,7 +25,7 @@ export default function Saved() {
 
   // States for saved recipes load
   const [originalRecipeList, setOriginalRecipeList] = useState([]);
-  const [headingText, setHeadingText] = useState("your saved recipes!");
+  const [headingText, setHeadingText] = useState("your saved recipes");
 
   // Refs
   const recipePane = useRef(null);
@@ -54,11 +54,11 @@ export default function Saved() {
   // Load saved recipes
   async function loadSavedRecipes(isSignedIn) {
     if (!isSignedIn) {
-      setHeadingText("sign in to view your saved recipes!");
+      setHeadingText("sign in to view your saved recipes");
       searchBar.current.style.display = "none";
       homeButton.current.style.display = "none";
       signInButton.current.style.display = "flex";
-      discoverButton.current.style.marginBottom = "122px";
+      discoverButton.current.style.marginBottom = "130px";
       recipePane.current.style.display = "none";
       return;
     }
@@ -80,14 +80,20 @@ export default function Saved() {
   async function updateSavedRecipes(isSignedIn) {
     setIsLoading(true);
     const newSavedRecipes = await loadSavedRecipes(isSignedIn);
-    newSavedRecipes.sort((a, b) =>
-      a.recipe.label.localeCompare(b.recipe.label)
-    );
+    if (newSavedRecipes) {
+      if (newSavedRecipes.length > 0) {
+        newSavedRecipes.sort((a, b) =>
+          a.recipe.label.localeCompare(b.recipe.label)
+        );
+      }
+    }
     setOriginalRecipeList(newSavedRecipes);
 
     // If search query on load, search for recipes
-    if (newSavedRecipes.length > 0 && searchParams.get("search") !== null) {
-      searchButton.current.click();
+    if (newSavedRecipes) {
+      if (newSavedRecipes.length > 0 && searchParams.get("search") !== null) {
+        searchButton.current.click();
+      }
     }
     setIsLoading(false);
   }
@@ -116,6 +122,8 @@ export default function Saved() {
       searchBar.current.querySelector("input").disabled = true;
       if (signedIn) {
         homeButton.current.style.display = "flex";
+        searchBar.current.style.display = "none";
+        discoverButton.current.style.marginBottom = "130px";
         if (isLoading === false) {
           setHeadingText(
             "no saved recipes yet. discover something new to try!"
@@ -126,7 +134,7 @@ export default function Saved() {
       discoverButton.current.style.display = "flex";
     } else {
       searchBar.current.querySelector("input").disabled = false;
-      setHeadingText("your saved recipes!");
+      setHeadingText("your saved recipes");
       searchBar.current.style.display = "flex";
       recipePane.current.style.display = "flex";
       discoverButton.current.style.display = "none";

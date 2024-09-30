@@ -22,8 +22,8 @@ body {
 }
 
 .heading-icon {
-  margin-right: 16px;
-  color: rgb(228, 228, 228);
+  margin-right: 18px;
+  color: white;
 }
 
 @media (max-width: 470px) {
