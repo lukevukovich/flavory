@@ -27,6 +27,7 @@ export default function SearchBar({
   searchBar,
   savedRecipeStates,
   searchButton,
+  clearButton,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -38,7 +39,6 @@ export default function SearchBar({
 
   // Refs
   const inputBar = useRef(null);
-  const clearButton = useRef(null);
 
   // Search for recipes
   async function searchRecipes(searchQuery) {

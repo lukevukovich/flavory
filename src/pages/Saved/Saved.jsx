@@ -35,6 +35,7 @@ export default function Saved() {
   const homeButton = useRef(null);
   const searchCountText = useRef(null);
   const searchButton = useRef(null);
+  const clearButton = useRef(null);
 
   // States for recipe list and searching
   const [signedIn, setSignedIn] = useState(false);
@@ -53,6 +54,7 @@ export default function Saved() {
 
   // Load saved recipes
   async function loadSavedRecipes(isSignedIn) {
+    setIsLoading(true);
     if (!isSignedIn) {
       setHeadingText("sign in to view your saved recipes");
       searchBar.current.style.display = "none";
@@ -63,41 +65,22 @@ export default function Saved() {
       return;
     }
 
-    const savedRecipes = await getSavedRecipes();
-    setRecipeList(savedRecipes.recipes);
-    if (savedRecipes.recipes.length > 0) {
-      if (savedRecipes.recipes.length === 1) {
+    const result = await getSavedRecipes();
+    const savedRecipes = result.recipes;
+    if (savedRecipes.length > 0) {
+      savedRecipes.sort((a, b) => a.recipe.label.localeCompare(b.recipe.label));
+      if (savedRecipes.length === 1) {
         setSearchCount("1 recipe");
       } else {
-        setSearchCount(savedRecipes.recipes.length + " recipes");
+        setSearchCount(savedRecipes.length + " recipes");
       }
     }
-
-    return savedRecipes.recipes;
-  }
-
-  // Update saved recipes
-  async function updateSavedRecipes(isSignedIn) {
-    setIsLoading(true);
-    const newSavedRecipes = await loadSavedRecipes(isSignedIn);
-    if (newSavedRecipes) {
-      if (newSavedRecipes.length > 0) {
-        newSavedRecipes.sort((a, b) =>
-          a.recipe.label.localeCompare(b.recipe.label)
-        );
-      }
-    }
-    setOriginalRecipeList(newSavedRecipes);
-
-    // If search query on load, search for recipes
-    if (newSavedRecipes) {
-      if (newSavedRecipes.length > 0 && searchParams.get("search") !== null) {
-        searchButton.current.click();
-      }
-    }
+    setOriginalRecipeList(savedRecipes);
+    setRecipeList(savedRecipes);
     setIsLoading(false);
   }
 
+  // Handle auth, search, and load operations
   async function useEffectLoad() {
     const { isSignedIn, user } = await checkSignInStatus();
     setSignedIn(isSignedIn);
@@ -108,7 +91,7 @@ export default function Saved() {
       setMoreResultsLink(null);
     }
 
-    updateSavedRecipes(isSignedIn);
+    loadSavedRecipes(isSignedIn);
   }
 
   // Handle all load operations
@@ -122,8 +105,6 @@ export default function Saved() {
       searchBar.current.querySelector("input").disabled = true;
       if (signedIn) {
         homeButton.current.style.display = "flex";
-        searchBar.current.style.display = "none";
-        discoverButton.current.style.marginBottom = "130px";
         if (isLoading === false) {
           setHeadingText(
             "no saved recipes yet. discover something new to try!"
@@ -169,6 +150,7 @@ export default function Saved() {
           searchBar={searchBar}
           savedRecipeStates={savedRecipeStates}
           searchButton={searchButton}
+          clearButton={clearButton}
         ></SearchBar>
         <div className="saved-recipe-panel" ref={recipePane}>
           <div className="saved-recipe-results-panel">
