@@ -7,7 +7,11 @@ import { recipeTypes, recipeDescriptors } from "../../utils/RecipeData";
 import { useState } from "react";
 import { getRecipes } from "../../utils/RecipeAPI";
 import RecipePane from "../../assets/RecipePane/RecipePane";
-import { faRotateRight, faLemon, faCompass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRotateRight,
+  faLemon,
+  faCompass,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Discover page
@@ -22,9 +26,11 @@ export default function Discover() {
     Array(NUMBER_OF_QUERIES).fill([])
   );
 
-  // States for refreshing recipes
+  // Refs for discover page elements
   const refreshButton = useRef(null);
   const discoverHeading = useRef(null);
+
+  // States for refreshing recipes
   const [loadMoreText, setLoadMoreText] = useState("load more");
   const [discoverText, setDiscoverText] = useState("discover new recipes");
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +59,7 @@ export default function Discover() {
     return { randomQueries, randomTypes: Array.from(randomTypes) };
   }
 
-  // Get random indexes for recipes, no duplicates
+  // Get unique random indexes for recipes
   function getRandomIndexes(recipes) {
     try {
       let availableNumbers = Array.from(
@@ -84,7 +90,7 @@ export default function Discover() {
         getRecipes(null, query)
       );
 
-      // Wait for all promises to resolve
+      // Wait for all promises to resolve, fetch all recipe calls concurrently
       const results = await Promise.all(recipePromises);
 
       for (let i = 0; i < results.length; i++) {
@@ -146,7 +152,11 @@ export default function Discover() {
       <div className="discover-panel">
         <div className="discover-heading" ref={discoverHeading}>
           <span className="heading-text discover-heading-text">
-            <FontAwesomeIcon icon={faCompass} className="heading-icon"></FontAwesomeIcon>{discoverText}
+            <FontAwesomeIcon
+              icon={faCompass}
+              className="heading-icon"
+            ></FontAwesomeIcon>
+            {discoverText}
           </span>
           <button
             className="button discover-refresh-button"

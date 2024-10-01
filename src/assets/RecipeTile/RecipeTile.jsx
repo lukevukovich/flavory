@@ -16,12 +16,12 @@ export default function RecipeTile({
   setSavedRecipeList,
   setSearchCount,
 }) {
+  // Ref for save button
+  const saveButton = useRef(null);
+
   // State for saved recipes
   const [saved, setSaved] = useState(false);
   const [saveIcon, setSaveIcon] = useState(faBookmark);
-
-  // Ref for save button
-  const saveButton = useRef(null);
 
   // Handle save button visibility
   async function handleSaveButton() {

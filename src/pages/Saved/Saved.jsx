@@ -23,11 +23,7 @@ export default function Saved() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // States for saved recipes load
-  const [originalRecipeList, setOriginalRecipeList] = useState([]);
-  const [headingText, setHeadingText] = useState("your saved recipes");
-
-  // Refs
+  // Refs for saved page elements
   const recipePane = useRef(null);
   const searchBar = useRef(null);
   const discoverButton = useRef(null);
@@ -35,9 +31,13 @@ export default function Saved() {
   const homeButton = useRef(null);
   const searchCountText = useRef(null);
 
-  // States for recipe list and searching
+  // State for heading text
+  const [headingText, setHeadingText] = useState("your saved recipes");
+
+  // States for recipe lists and searching
   const [signedIn, setSignedIn] = useState(false);
   const [recipeList, setRecipeList] = useState([]);
+  const [originalRecipeList, setOriginalRecipeList] = useState([]);
   const [moreResultsLink, setMoreResultsLink] = useState(null);
   const [searchCount, setSearchCount] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -97,23 +97,22 @@ export default function Saved() {
     useEffectLoad();
   }, []);
 
-  // Set states for recipe list
+  // Set states for recipe list, manage elements
   useEffect(() => {
     if (recipeList.length === 0) {
       searchBar.current.querySelector("input").disabled = true;
       if (signedIn) {
         homeButton.current.style.display = "flex";
         if (isLoading === false) {
-          setHeadingText(
-            "no saved recipes yet. discover something new to try!"
-          );
+          setHeadingText("no saved recipes");
+          searchBar.current.querySelector("input").placeholder =
+            "no saved recipes";
         }
       }
       recipePane.current.style.display = "none";
       discoverButton.current.style.display = "flex";
     } else {
       searchBar.current.querySelector("input").disabled = false;
-      setHeadingText("your saved recipes");
       searchBar.current.style.display = "flex";
       recipePane.current.style.display = "flex";
       discoverButton.current.style.display = "none";

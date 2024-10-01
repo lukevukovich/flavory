@@ -1,3 +1,4 @@
+// Recipe types for discover page
 export const recipeTypes = [
   // Meats & Proteins
   "Chicken",

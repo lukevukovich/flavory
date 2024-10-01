@@ -12,6 +12,7 @@ import { formatNumber } from "../../utils/Number";
 import "../../App.css";
 
 // Search bar component
+// getRecipes is function passed to component from parent. Allows for flexible searching
 export default function SearchBar({
   page,
   getRecipes,
@@ -30,15 +31,15 @@ export default function SearchBar({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // State for search input
-  const [search, setSearch] = useState("");
-  const [previousSearch, setPreviousSearch] = useState("");
-  const [searchIcon, setSearchIcon] = useState(faSearch);
-
-  // Refs
+  // Refs for search bar elements
   const inputBar = useRef(null);
   const searchButton = useRef(null);
   const clearButton = useRef(null);
+
+  // States for search bar
+  const [search, setSearch] = useState("");
+  const [previousSearch, setPreviousSearch] = useState("");
+  const [searchIcon, setSearchIcon] = useState(faSearch);
 
   // Search for recipes
   async function searchRecipes(searchQuery) {
@@ -73,9 +74,6 @@ export default function SearchBar({
       }
       window.scrollTo(0, 0);
     } else {
-      const setList = savedRecipeList || [];
-      setRecipeList(setList);
-      newRecipeList = setList;
       setMoreResultsLink(null);
       let prompt;
       if (page === "") {
@@ -162,7 +160,7 @@ export default function SearchBar({
     }
   }
 
-  // Set search input on load
+  // Handle scroll and resize events, and search on load
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
@@ -225,7 +223,6 @@ export default function SearchBar({
             setPreviousSearch(search);
             setSearch(e.target.value.toLowerCase());
             if (e.target.value === "") {
-              window.scrollTo(0, 0);
               if (savedRecipeList) {
                 setRecipeList(savedRecipeList || []);
                 const newRecipeList = savedRecipeList || [];
@@ -239,7 +236,6 @@ export default function SearchBar({
                   savedRecipeStates[3]("saved recipes");
                 }
               }
-              setMoreResultsLink(null);
               navigate("/" + page);
             } else {
               let goToSearch;
@@ -265,7 +261,6 @@ export default function SearchBar({
             setSearch("");
             setPreviousSearch("");
             if (savedRecipeList) {
-              window.scrollTo(0, 0);
               setRecipeList(savedRecipeList || []);
               const newRecipeList = savedRecipeList || [];
               if (newRecipeList.length > 0) {
@@ -280,7 +275,6 @@ export default function SearchBar({
                 savedRecipeStates[3]("saved recipes");
               }
             }
-            setMoreResultsLink(null);
             navigate("/" + page);
           }}
         >

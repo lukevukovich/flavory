@@ -55,6 +55,7 @@ export default function Header({ setRecipeList }) {
     setSignedIn(isSignedIn);
   }
 
+  // Set status icon based on current page
   function setPageIconOnLoad() {
     const path = window.location.pathname;
     switch (path) {
@@ -77,7 +78,7 @@ export default function Header({ setRecipeList }) {
     setPageIconOnLoad();
   }, []);
 
-  // Detect click outside of menu panel
+  // Detect click outside of menu panel, close if expanded
   const handleClickOutside = (event) => {
     if (
       menuPanel.current &&

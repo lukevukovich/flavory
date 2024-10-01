@@ -53,7 +53,7 @@ export async function getNextRecipes(query, cont) {
 
     // If the user is signed in, add the user-id to the headers
     if (isSignedIn && user) {
-      headers["user-id"] = user.uid; // Assuming `user.uid` contains the Firebase user ID
+      headers["user-id"] = user.uid; 
     }
 
     // Make the request to the API
@@ -61,7 +61,7 @@ export async function getNextRecipes(query, cont) {
       `${GET_NEXT_RECIPES_API}?q=${query}&cont=${cont}`,
       {
         method: "GET",
-        headers: headers, // Use the headers object with or without the user-id
+        headers: headers,d
       }
     );
 

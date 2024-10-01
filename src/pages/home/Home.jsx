@@ -23,7 +23,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // Refs
+  // Refs for home page elements
   const searchBar = useRef(null);
   const recipePane = useRef(null);
   const discoverButton = useRef(null);
@@ -72,7 +72,7 @@ export default function Home() {
     setSaying(sayings[randomIndex]);
   }, []);
 
-  // Set states for recipe list, add/remove buttons
+  // Set states for recipe list, manage buttons
   useEffect(() => {
     if (recipeList.length === 0) {
       recipePane.current.style.display = "none";
