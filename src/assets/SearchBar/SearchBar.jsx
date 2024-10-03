@@ -56,7 +56,7 @@ export default function SearchBar({
     setIsLoading(true);
 
     let newRecipeList = [];
-    const result = await getRecipes(recipeList, searchString);
+    const result = await getRecipes(savedRecipeList || recipeList, searchString);
     if (result.hits.length > 0) {
       newRecipeList = result.hits;
       setRecipeList(newRecipeList);
@@ -74,6 +74,10 @@ export default function SearchBar({
       }
       window.scrollTo(0, 0);
     } else {
+      if (savedRecipeList) {
+        newRecipeList = savedRecipeList;
+        setRecipeList(newRecipeList);
+      }
       setMoreResultsLink(null);
       let prompt;
       if (page === "") {
