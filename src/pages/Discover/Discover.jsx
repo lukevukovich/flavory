@@ -115,10 +115,10 @@ export default function Discover() {
 
     if (allRandomRecipes.length === 0) {
       setDiscoverText("unable to fetch recipes, refresh to try again!");
-      discoverHeading.current.style.marginBottom = "320px";
+      discoverHeading.current.style.marginBottom = "310px";
     } else {
       setDiscoverText("discover new recipes");
-      discoverHeading.current.style.marginBottom = "40px";
+      discoverHeading.current.style.marginBottom = "30px";
     }
 
     setRecipeList(allRandomRecipes);

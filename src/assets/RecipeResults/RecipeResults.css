@@ -1,6 +1,6 @@
 .load-more-button {
     display: flex;
-    margin-top: 40px;
+    margin-top: 26px;
 }
 
 @media (max-width: 470px) {
