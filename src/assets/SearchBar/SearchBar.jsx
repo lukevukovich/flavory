@@ -157,7 +157,6 @@ export default function SearchBar({
       headingElement.current.classList.remove("heading-scroll");
     }
 
-    console.log(searchBarHeight);
     if (scrollY <= 176 + headingHeight - 37 + (91 - searchBarHeight)) {
       searchBar.current.classList.remove("search-bar-scroll");
       headingElement.current.classList.remove("heading-scroll");
