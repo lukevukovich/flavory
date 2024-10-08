@@ -27,6 +27,7 @@ export default function SearchBar({
   savedRecipeList,
   searchBar,
   savedRecipeStates,
+  headingElement,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -56,7 +57,10 @@ export default function SearchBar({
     setIsLoading(true);
 
     let newRecipeList = [];
-    const result = await getRecipes(savedRecipeList || recipeList, searchString);
+    const result = await getRecipes(
+      savedRecipeList || recipeList,
+      searchString
+    );
     if (result.hits.length > 0) {
       newRecipeList = result.hits;
       setRecipeList(newRecipeList);
@@ -136,15 +140,27 @@ export default function SearchBar({
 
   // Handle scroll and resize events for search bar snapping
   function handleScroll() {
+    const headingHeight = headingElement.current.getBoundingClientRect().height;
+    const searchBarHeight = searchBar.current.getBoundingClientRect().height;
     const searchBarY = searchBar.current.getBoundingClientRect().top;
-    if (searchBarY <= 84) {
+    const scrollY = window.scrollY;
+
+    if (searchBarY <= 86) {
       if (window.innerWidth <= 930) {
         searchBar.current.classList.add("search-bar-scroll");
+        headingElement.current.classList.add("heading-scroll");
       } else {
         searchBar.current.classList.remove("search-bar-scroll");
       }
     } else {
       searchBar.current.classList.remove("search-bar-scroll");
+      headingElement.current.classList.remove("heading-scroll");
+    }
+
+    console.log(searchBarHeight);
+    if (scrollY <= 176 + headingHeight - 37 + (91 - searchBarHeight)) {
+      searchBar.current.classList.remove("search-bar-scroll");
+      headingElement.current.classList.remove("heading-scroll");
     }
   }
 
@@ -157,10 +173,12 @@ export default function SearchBar({
         searchBar.current.classList.add("search-bar-scroll");
       } else {
         searchBar.current.classList.remove("search-bar-scroll");
+        headingElement.current.classList.remove("heading-scroll");
       }
     } else {
       searchBar.current.classList.remove("search-bar-resize");
       searchBar.current.classList.remove("search-bar-scroll");
+      headingElement.current.classList.remove("heading-scroll");
     }
   }
 

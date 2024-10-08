@@ -1,5 +1,6 @@
 import "./Saved.css";
 import "../../App.css";
+import "../../assets/SearchBar/SearchBar.css";
 import Header from "../../assets/Header/Header";
 import Footer from "../../assets/Footer/Footer";
 import SearchBar from "../../assets/SearchBar/SearchBar";
@@ -30,6 +31,7 @@ export default function Saved() {
   const signInButton = useRef(null);
   const homeButton = useRef(null);
   const searchCountText = useRef(null);
+  const headingElement = useRef(null);
 
   // State for heading text
   const [headingText, setHeadingText] = useState("your saved recipes");
@@ -125,7 +127,7 @@ export default function Saved() {
     <div>
       <Header setRecipeList={setRecipeList}></Header>
       <div className="saved-search-panel">
-        <span className="heading-text saved-search-prompt">
+        <span className="heading-text saved-search-prompt" ref={headingElement}>
           <FontAwesomeIcon
             icon={faBookmark}
             className="heading-icon"
@@ -146,6 +148,7 @@ export default function Saved() {
           savedRecipeList={originalRecipeList}
           searchBar={searchBar}
           savedRecipeStates={savedRecipeStates}
+          headingElement={headingElement}
         ></SearchBar>
         <div className="saved-recipe-panel" ref={recipePane}>
           <div className="saved-recipe-results-panel">

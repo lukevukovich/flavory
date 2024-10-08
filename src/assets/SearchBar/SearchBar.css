@@ -20,6 +20,7 @@
   border-right: 1px solid rgb(235, 128, 79);
   border-bottom-left-radius: 35px;
   border-bottom-right-radius: 35px;
+  position: fixed;
 }
 
 .search-bar-panel {
@@ -57,11 +58,11 @@
 
 @media (max-width: 626px) {
   .search-bar-panel {
-    width: 100%;
+    width: 100vw;
   }
 
   .search-bar {
-    width: 100%;
+    width: 100vw;
     box-sizing: border-box;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -131,4 +132,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.heading-scroll {
+  margin-bottom: 140px !important;
 }

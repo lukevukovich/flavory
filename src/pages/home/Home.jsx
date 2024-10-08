@@ -30,6 +30,7 @@ export default function Home() {
   const savedButton = useRef(null);
   const signInButton = useRef(null);
   const searchCountText = useRef(null);
+  const headingElement = useRef(null);
 
   // State for random saying
   const [saying, setSaying] = useState("");
@@ -96,7 +97,7 @@ export default function Home() {
     <div>
       <Header setRecipeList={setRecipeList}></Header>
       <div className="home-search-panel">
-        <span className="heading-text home-search-prompt">{saying}</span>
+        <span className="heading-text home-search-prompt" ref={headingElement}>{saying}</span>
         <SearchBar
           page={""}
           getRecipes={getRecipes}
@@ -111,6 +112,7 @@ export default function Home() {
           savedRecipeList={null}
           searchBar={searchBar}
           savedRecipeStates={null}
+          headingElement={headingElement}
         ></SearchBar>
         <div className="home-recipe-panel" ref={recipePane}>
           <div className="home-recipe-results-panel">
