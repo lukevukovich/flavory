@@ -9,9 +9,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   faBookmark,
   faCompass,
-  faHome,
   faSearch,
   faUser,
+  faLemon,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
@@ -31,6 +31,7 @@ export default function Home() {
   const signInButton = useRef(null);
   const searchCountText = useRef(null);
   const headingElement = useRef(null);
+  const loadingPageRef = useRef(null);
 
   // State for random saying
   const [saying, setSaying] = useState("");
@@ -40,6 +41,7 @@ export default function Home() {
   const [moreResultsLink, setMoreResultsLink] = useState(null);
   const [searchCount, setSearchCount] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
 
   // State for sign in
   const [signedIn, setSignedIn] = useState(false);
@@ -56,6 +58,7 @@ export default function Home() {
     }
 
     setSignedIn(isSignedIn);
+    setLoadingPage(false);
   }
 
   // Set random saying on load
@@ -93,11 +96,28 @@ export default function Home() {
     }
   }, [recipeList]);
 
+  // Display loading page if needed
+  useEffect(() => {
+    if (loadingPage) {
+      loadingPageRef.current.style.display = "flex";
+    } else {
+      loadingPageRef.current.style.display = "none";
+    }
+  }, [loadingPage]);
+
   return (
     <div>
       <Header setRecipeList={setRecipeList}></Header>
+      <div className="loading-page" ref={loadingPageRef}>
+        <FontAwesomeIcon
+          icon={faLemon}
+          className="button-icon spinner"
+        ></FontAwesomeIcon>
+      </div>
       <div className="home-search-panel">
-        <span className="heading-text home-search-prompt" ref={headingElement}>{saying}</span>
+        <span className="heading-text home-search-prompt" ref={headingElement}>
+          {saying}
+        </span>
         <SearchBar
           page={""}
           getRecipes={getRecipes}

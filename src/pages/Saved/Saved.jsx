@@ -11,6 +11,7 @@ import {
   faCompass,
   faHome,
   faUser,
+  faLemon,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
@@ -32,6 +33,7 @@ export default function Saved() {
   const homeButton = useRef(null);
   const searchCountText = useRef(null);
   const headingElement = useRef(null);
+  const loadingPageRef = useRef(null);
 
   // State for heading text
   const [headingText, setHeadingText] = useState("your saved recipes");
@@ -51,6 +53,7 @@ export default function Saved() {
     savedRecipeText,
     setSavedRecipeText,
   ];
+  const [loadingPage, setLoadingPage] = useState(true);
 
   // Load saved recipes
   async function loadSavedRecipes(isSignedIn) {
@@ -91,13 +94,23 @@ export default function Saved() {
       setMoreResultsLink(null);
     }
 
-    loadSavedRecipes(isSignedIn);
+    setLoadingPage(false);
+    await loadSavedRecipes(isSignedIn);
   }
 
   // Handle all load operations
   useEffect(() => {
     useEffectLoad();
   }, []);
+
+  // Display loading page if needed
+  useEffect(() => {
+    if (loadingPage) {
+      loadingPageRef.current.style.display = "flex";
+    } else {
+      loadingPageRef.current.style.display = "none";
+    }
+  }, [loadingPage]);
 
   // Set states for recipe list, manage elements
   useEffect(() => {
@@ -126,6 +139,12 @@ export default function Saved() {
   return (
     <div>
       <Header setRecipeList={setRecipeList}></Header>
+      <div className="loading-page" ref={loadingPageRef}>
+        <FontAwesomeIcon
+          icon={faLemon}
+          className="button-icon spinner"
+        ></FontAwesomeIcon>
+      </div>
       <div className="saved-search-panel">
         <span className="heading-text saved-search-prompt" ref={headingElement}>
           <FontAwesomeIcon
