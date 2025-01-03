@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
 import { getRecipes } from "../../utils/RecipeAPI";
 import { checkSignInStatus, signIn } from "../../utils/Auth";
+import LoadingScreen from "../../assets/LoadingScreen/LoadingScreen";
 
 // Home page
 export default function Home() {
@@ -31,7 +32,6 @@ export default function Home() {
   const signInButton = useRef(null);
   const searchCountText = useRef(null);
   const headingElement = useRef(null);
-  const loadingPageRef = useRef(null);
 
   // State for random saying
   const [saying, setSaying] = useState("");
@@ -41,7 +41,7 @@ export default function Home() {
   const [moreResultsLink, setMoreResultsLink] = useState(null);
   const [searchCount, setSearchCount] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingScreen, setLoadingScreen] = useState(true);
 
   // State for sign in
   const [signedIn, setSignedIn] = useState(false);
@@ -58,7 +58,7 @@ export default function Home() {
     }
 
     setSignedIn(isSignedIn);
-    setLoadingPage(false);
+    setLoadingScreen(false);
   }
 
   // Set random saying on load
@@ -96,24 +96,10 @@ export default function Home() {
     }
   }, [recipeList]);
 
-  // Display loading page if needed
-  useEffect(() => {
-    if (loadingPage) {
-      loadingPageRef.current.style.display = "flex";
-    } else {
-      loadingPageRef.current.style.display = "none";
-    }
-  }, [loadingPage]);
-
   return (
     <div>
       <Header setRecipeList={setRecipeList}></Header>
-      <div className="loading-page" ref={loadingPageRef}>
-        <FontAwesomeIcon
-          icon={faLemon}
-          className="button-icon spinner"
-        ></FontAwesomeIcon>
-      </div>
+      <LoadingScreen loadingScreenBool={loadingScreen}></LoadingScreen>
       <div className="home-search-panel">
         <span className="heading-text home-search-prompt" ref={headingElement}>
           {saying}
