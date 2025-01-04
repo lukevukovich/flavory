@@ -31,8 +31,6 @@ export const recipeTypes = [
   "Kebabs",
   "Sushi",
   "Tofu",
-  "Tempeh",
-  "Seitan",
   "Falafel",
 
   // Vegetables & Plant based
@@ -184,7 +182,6 @@ export const recipeTypes = [
   "Charcuterie",
   "Tapas",
   "Sushi Bowl",
-  "Bento Box",
   "Stuffed Chicken",
   "Vegan",
   "Vegetarian",

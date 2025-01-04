@@ -1,6 +1,6 @@
 .spinner {
   display: flex;
-  margin-bottom: 200px;
+  margin-bottom: 150px;
   animation: rotate 0.7s linear infinite;
 }
 

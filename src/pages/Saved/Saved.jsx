@@ -11,7 +11,6 @@ import {
   faCompass,
   faHome,
   faUser,
-  faLemon,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";
@@ -59,7 +58,7 @@ export default function Saved() {
   async function loadSavedRecipes(isSignedIn) {
     setIsLoading(true);
     if (!isSignedIn) {
-      setHeadingText("sign in to view your saved recipes");
+      setHeadingText("sign in to save recipes!");
       searchBar.current.style.display = "none";
       homeButton.current.style.display = "none";
       signInButton.current.style.display = "flex";

@@ -23,12 +23,18 @@ body {
 
 .heading-icon {
   margin-right: 18px;
+  margin-bottom: -3px;
   color: white;
 }
 
 @media (max-width: 470px) {
   .heading-text {
     font-size: 28px;
+  }
+
+  .heading-icon {
+    margin-right: 12px;
+    margin-bottom: -2px;
   }
 }
 

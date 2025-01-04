@@ -11,7 +11,6 @@ import {
   faCompass,
   faSearch,
   faUser,
-  faLemon,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RecipeResults from "../../assets/RecipeResults/RecipeResults";

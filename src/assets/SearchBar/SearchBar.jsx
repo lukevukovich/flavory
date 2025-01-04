@@ -82,7 +82,9 @@ export default function SearchBar({
         newRecipeList = savedRecipeList;
         setRecipeList(newRecipeList);
       }
-      setMoreResultsLink(null);
+      if (recipeList.length === 0) {
+        setMoreResultsLink(null);
+      }
       let prompt;
       if (page === "") {
         prompt = page;
@@ -94,16 +96,18 @@ export default function SearchBar({
     }
     setPreviousSearch(searchString);
 
-    let searchCount;
-    try {
-      searchCount = formatNumber(result.count) + " recipe";
-    } catch (error) {
-      searchCount = formatNumber(newRecipeList.length) + " recipe";
+    if (newRecipeList.length > 0 || savedRecipeList) {
+      let searchCount;
+      try {
+        searchCount = formatNumber(result.count) + " recipe";
+      } catch (error) {
+        searchCount = formatNumber(newRecipeList.length) + " recipe";
+      }
+      if (newRecipeList.length > 1) {
+        searchCount += "s";
+      }
+      setSearchCount(searchCount);
     }
-    if (newRecipeList.length > 1) {
-      searchCount += "s";
-    }
-    setSearchCount(searchCount);
 
     setIsLoading(false);
   }
