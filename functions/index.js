@@ -3,6 +3,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { onRequest, onCall } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
+const { createHash } = require("crypto");
 
 // Initialize the Firebase SDK
 admin.initializeApp();
@@ -49,7 +50,7 @@ exports.getRecipes = onRequest(
         const recipe = response.data.hits[i];
         let saved = false;
         if (userId) {
-          saved = await checkIfSaved(userId, getRecipeID(recipe));
+          saved = await checkIfSaved(userId, generateRecipeId(recipe.recipe.label, recipe.recipe.url));
         }
         response.data.hits[i].recipe.saved = saved;
       }
@@ -95,7 +96,7 @@ exports.getNextRecipes = onRequest(
         const recipe = response.data.hits[i];
         let saved = false;
         if (userId) {
-          saved = await checkIfSaved(userId, getRecipeID(recipe));
+          saved = await checkIfSaved(userId, generateRecipeId(recipe.recipe.label, recipe.recipe.url));
         }
         response.data.hits[i].recipe.saved = saved;
       }
@@ -155,7 +156,7 @@ exports.saveRecipe = onCall(async (request) => {
   // Get the user ID and recipe data from the request
   const userId = request.auth.uid;
   let recipe = request.data.recipe;
-  const recipeId = getRecipeID(recipe);
+  const recipeId = generateRecipeId(recipe.recipe.label, recipe.recipe.url);
 
   // Validate input data
   if (!recipe) {
@@ -268,9 +269,10 @@ async function uploadImageToFirebaseStorage(imageUrl, recipeId) {
   return `https://storage.googleapis.com/${bucket.name}/${fileName}`;
 }
 
-// Helper function to extract the recipe ID from the recipe hit
-function getRecipeID(recipe_hit) {
-  return recipe_hit._links.self.href.split("/")[6].split("?")[0];
+// Helper function to generate a unique recipe ID
+function generateRecipeId(label, url) {
+  const input = `${label.trim().toLowerCase()}_${url.trim().toLowerCase()}`;
+  return createHash("sha256").update(input).digest("hex");
 }
 
 // Helper function to check if a recipe is saved
