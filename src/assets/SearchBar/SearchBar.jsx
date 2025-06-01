@@ -41,6 +41,10 @@ export default function SearchBar({
   const [search, setSearch] = useState("");
   const [previousSearch, setPreviousSearch] = useState("");
   const [searchIcon, setSearchIcon] = useState(faSearch);
+  const [typingTimeout, setTypingTimeout] = useState(false);
+
+  // Constants for search delay
+  const searchDelay = 250;
 
   // Search for recipes
   async function searchRecipes(searchQuery) {
@@ -50,7 +54,7 @@ export default function SearchBar({
       return;
     }
 
-    if (searchString === previousSearch) {
+    if (searchString === previousSearch && !savedRecipeList) {
       return;
     }
 
@@ -91,8 +95,15 @@ export default function SearchBar({
       } else {
         prompt = page + " ";
       }
-      inputBar.current.placeholder = `no ${prompt}recipes found, try again`;
-      setSearch("");
+      if (!savedRecipeList) {
+        inputBar.current.placeholder = `no ${prompt}recipes found, try again`;
+        setSearch("");
+      } else {
+        if (savedRecipeStates) {
+          savedRecipeStates[1](faBookmark);
+          savedRecipeStates[3]("saved recipes");
+        }
+      }
     }
     setPreviousSearch(searchString);
 
@@ -125,19 +136,23 @@ export default function SearchBar({
   // Handle search on load
   useEffect(() => {
     searchSavedRecipesOnLoad();
-  }, [recipeList]);
+  }, [savedRecipeList]);
 
   // Set search button to loading state
   useEffect(() => {
     if (isLoading) {
       searchButton.current.disabled = true;
       clearButton.current.disabled = true;
-      searchBar.current.querySelector("input").disabled = true;
+      if (!savedRecipeList) {
+        searchBar.current.querySelector("input").disabled = true;
+      }
       setSearchIcon(faLemon);
     } else {
       searchButton.current.disabled = false;
       clearButton.current.disabled = false;
-      searchBar.current.querySelector("input").disabled = false;
+      if (!savedRecipeList) {
+        searchBar.current.querySelector("input").disabled = false;
+      }
       setSearchIcon(faSearch);
     }
   }, [isLoading]);
@@ -245,9 +260,12 @@ export default function SearchBar({
           placeholder={`search for ${page ? page + " " : ""}recipes`}
           value={search}
           onChange={(e) => {
-            setPreviousSearch(search);
+            if (savedRecipeList) {
+              setPreviousSearch(search);
+            }
             setSearch(e.target.value.toLowerCase());
             if (e.target.value === "") {
+              clearTimeout(typingTimeout);
               if (savedRecipeList) {
                 setRecipeList(savedRecipeList || []);
                 const newRecipeList = savedRecipeList || [];
@@ -275,7 +293,16 @@ export default function SearchBar({
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               searchRecipes();
-              e.currentTarget.blur();
+            } else {
+              if (savedRecipeList) {
+                if (typingTimeout) clearTimeout(typingTimeout);
+                const newTimeout = setTimeout(() => {
+                  searchRecipes(
+                    searchBar.current.querySelector("input").value.toLowerCase()
+                  );
+                }, searchDelay);
+                setTypingTimeout(newTimeout);
+              }
             }
           }}
         />

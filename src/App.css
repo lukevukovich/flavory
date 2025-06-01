@@ -4,7 +4,7 @@
   background-color: rgb(228, 82, 25);
 }
 
-body {
+html, body {
   padding: 0px;
   margin: 0px;
   width: 100vw;

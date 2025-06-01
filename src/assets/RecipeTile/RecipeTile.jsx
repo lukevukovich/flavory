@@ -41,6 +41,10 @@ export default function RecipeTile({
     setSaved(recipe.recipe.saved);
   }, []);
 
+  useEffect(() => {
+    setSaved(recipe.recipe.saved);
+  }, [recipe]);
+
   // Handle saving recipes
   async function handleRecipeSave() {
     const prev = saved;
