@@ -65,7 +65,7 @@ export default function SearchBar({
       savedRecipeList || recipeList,
       searchString
     );
-    if (result.hits.length > 0) {
+    if (result?.hits?.length > 0) {
       newRecipeList = result.hits;
       setRecipeList(newRecipeList);
       if (savedRecipeStates) {

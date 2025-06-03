@@ -31,7 +31,7 @@ export default function Discover() {
   const discoverHeading = useRef(null);
 
   // States for refreshing recipes
-  const [loadMoreText, setLoadMoreText] = useState("load more");
+  const [loadMoreText, setLoadMoreText] = useState("refresh");
   const [discoverText, setDiscoverText] = useState("discover new recipes");
   const [isLoading, setIsLoading] = useState(false);
   const [refreshIcon, setRefreshIcon] = useState(faRotateRight);
@@ -129,7 +129,7 @@ export default function Discover() {
   async function handleRandomRecipes() {
     refreshButton.current.disabled = true;
     setRefreshIcon(faLemon);
-    setLoadMoreText("loading...");
+    setLoadMoreText("loading");
     setIsLoading(true);
 
     const { randomQueries, randomTypes } = generateRandomQueries();
@@ -137,7 +137,7 @@ export default function Discover() {
 
     setIsLoading(false);
     setRefreshIcon(faRotateRight);
-    setLoadMoreText("load more");
+    setLoadMoreText("refresh");
     refreshButton.current.disabled = false;
   }
 
