@@ -15,12 +15,12 @@
 }
 
 .search-bar-scroll {
-  border-bottom: 1px solid rgb(235, 128, 79);
-  border-left: 1px solid rgb(235, 128, 79);
-  border-right: 1px solid rgb(235, 128, 79);
-  border-bottom-left-radius: 35px;
-  border-bottom-right-radius: 35px;
+  border-bottom: 2px solid rgb(235, 128, 79);
+  width: 100vw;
+  box-sizing: border-box;
   position: fixed;
+  display: flex;
+  justify-content: center;
 }
 
 .search-bar-panel {
