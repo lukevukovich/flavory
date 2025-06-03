@@ -52,7 +52,6 @@ export default function Saved() {
     savedRecipeText,
     setSavedRecipeText,
   ];
-  const [loadingScreen, setLoadingScreen] = useState(true);
 
   // Load saved recipes
   async function loadSavedRecipes(isSignedIn) {
@@ -93,7 +92,7 @@ export default function Saved() {
       setMoreResultsLink(null);
     }
 
-    setLoadingScreen(false);
+    setIsLoading(false);
     await loadSavedRecipes(isSignedIn);
   }
 
@@ -129,7 +128,7 @@ export default function Saved() {
   return (
     <div>
       <Header setRecipeList={setRecipeList}></Header>
-      <LoadingScreen loadingScreenBool={loadingScreen}></LoadingScreen>
+      <LoadingScreen loadingScreenBool={isLoading}></LoadingScreen>
       <div className="saved-search-panel">
         <span className="heading-text saved-search-prompt" ref={headingElement}>
           <FontAwesomeIcon

@@ -42,6 +42,7 @@ export default function SearchBar({
   const [previousSearch, setPreviousSearch] = useState("");
   const [searchIcon, setSearchIcon] = useState(faSearch);
   const [typingTimeout, setTypingTimeout] = useState(false);
+  const [savedPage, setSavedPage] = useState(false);
 
   // Constants for search delay
   const searchDelay = 250;
@@ -126,6 +127,7 @@ export default function SearchBar({
   // Search for saved recipes on load
   async function searchSavedRecipesOnLoad() {
     if (savedRecipeList) {
+      setSavedPage(true);
       if (recipeList.length > 0 && searchParams.get("search") !== null) {
         setPreviousSearch("");
         await searchRecipes(search);
@@ -137,6 +139,13 @@ export default function SearchBar({
   useEffect(() => {
     searchSavedRecipesOnLoad();
   }, [savedRecipeList]);
+
+  useEffect(() => {
+    if (savedPage) {
+      searchButton.current.style.display = "none";
+      searchBar.current.style.paddingTop = "11px";
+    }
+  }, [savedPage]);
 
   // Set search button to loading state
   useEffect(() => {
