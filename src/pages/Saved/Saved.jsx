@@ -55,7 +55,6 @@ export default function Saved() {
 
   // Load saved recipes
   async function loadSavedRecipes(isSignedIn) {
-    setIsLoading(true);
     if (!isSignedIn) {
       setHeadingText("sign in to save recipes!");
       searchBar.current.style.display = "none";
@@ -78,11 +77,11 @@ export default function Saved() {
     }
     setOriginalRecipeList(savedRecipes);
     setRecipeList(savedRecipes);
-    setIsLoading(false);
   }
 
   // Handle auth, search, and load operations
   async function useEffectLoad() {
+    setIsLoading(true);
     const { isSignedIn, user } = await checkSignInStatus();
     setSignedIn(isSignedIn);
     const search = searchParams.get("search");
@@ -91,9 +90,8 @@ export default function Saved() {
       setRecipeList([]);
       setMoreResultsLink(null);
     }
-
-    setIsLoading(false);
     await loadSavedRecipes(isSignedIn);
+    setIsLoading(false);
   }
 
   // Handle all load operations
