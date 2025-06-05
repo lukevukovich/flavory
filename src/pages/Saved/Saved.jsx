@@ -90,6 +90,7 @@ export default function Saved() {
       setRecipeList([]);
       setMoreResultsLink(null);
     }
+    setIsLoading(true);
     await loadSavedRecipes(isSignedIn);
     setIsLoading(false);
   }
