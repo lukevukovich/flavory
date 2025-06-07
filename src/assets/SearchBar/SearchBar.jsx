@@ -144,6 +144,7 @@ export default function SearchBar({
     if (savedPage) {
       searchButton.current.style.display = "none";
       searchBar.current.style.paddingTop = "11px";
+      searchBar.current.style.paddingBottom = "24px";
     }
   }, [savedPage]);
 
