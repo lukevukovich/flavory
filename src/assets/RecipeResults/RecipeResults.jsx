@@ -52,7 +52,7 @@ export default function RecipeResults({
     if (isLoading) {
       loadMoreButton.current.disabled = true;
       setLoadMoreIcon(faLemon);
-      setLoadMoreText("loading...");
+      setLoadMoreText("loading");
     } else {
       loadMoreButton.current.disabled = false;
       setLoadMoreIcon(faPlus);
